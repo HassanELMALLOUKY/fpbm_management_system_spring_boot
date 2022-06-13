@@ -72,7 +72,7 @@ public class EtudiantController {
     @PostMapping(path = "/import-to-db")
     public String importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
         if(file.isEmpty()){
-            System.out.println("khaaaaaawi");
+            System.out.println("khaaaaaaw");
         }
         EtudiantExcelImport a= new EtudiantExcelImport(etudiantService,filiereService);
         a.importToDb(file);
