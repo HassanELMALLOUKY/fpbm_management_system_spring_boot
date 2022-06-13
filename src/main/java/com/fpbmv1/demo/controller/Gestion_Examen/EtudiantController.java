@@ -1,6 +1,7 @@
 package com.fpbmv1.demo.controller.Gestion_Examen;
 
 import com.fpbmv1.demo.entites.Etudiant;
+import com.fpbmv1.demo.entites.Filiere;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantExcelImport;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantService;
 import com.fpbmv1.demo.services.Gestion_Examen.FiliereService;
@@ -19,12 +20,14 @@ public class EtudiantController {
     private EtudiantService etudiantService;
     @Autowired
     private FiliereService filiereService;
+    @Autowired
+    private EtudiantExcelImport etudiantExcelImport;
 
     // display list of etudiants
     @GetMapping("/")
     public String viewHomePage(Model model) {
         model.addAttribute("listEtudiants", etudiantService.getAllStudents());
-        return "index";
+        return "Etudiant/index";
     }
     @GetMapping("/home")
     public String home(){
@@ -35,12 +38,15 @@ public class EtudiantController {
     public String showNewEtudiantForm(Model model) {
         // create model attribute to bind form data
         Etudiant etudiant = new Etudiant();
+        //Filiere filiere = new Filiere();
+        model.addAttribute("filieres",filiereService.getAllFiliere());
         model.addAttribute("etudiant", etudiant);
-        return "new_etudiant";
+        return "Etudiant/new_etudiant";
     }
 
     @PostMapping("/saveEtudiant")
     public String saveEtudiant(@ModelAttribute("etudiant") Etudiant etudiant) {
+        //etudiant.setFiliere(filiereService.getFiliereByName(nameF));
         // save etudiant to database
         etudiantService.saveEtudiant(etudiant);
         return "redirect:/";
@@ -54,7 +60,9 @@ public class EtudiantController {
 
         // set etudiant as a model attribute to pre-populate the form
         model.addAttribute("etudiant", etudiant);
-        return "update_etudiant";
+        model.addAttribute("filieres",filiereService.getAllFiliere());
+
+        return "Etudiant/update_etudiant";
     }
 
     @GetMapping("/deleteEtudiant/{id}")
@@ -71,11 +79,7 @@ public class EtudiantController {
     }
     @PostMapping(path = "/import-to-db")
     public String importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
-        if(file.isEmpty()){
-            System.out.println("hhhhhh");
-        }
-        EtudiantExcelImport a= new EtudiantExcelImport(etudiantService,filiereService);
-        a.importToDb(file);
+        etudiantExcelImport.importToDb(file);
         return "redirect:/";
 
     }

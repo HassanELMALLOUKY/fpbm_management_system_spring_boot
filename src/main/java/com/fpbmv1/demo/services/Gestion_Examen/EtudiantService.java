@@ -37,4 +37,5 @@ public class EtudiantService{
     public void saveAll(List<Etudiant> etudiants) {
         etudiantRepository.saveAll(etudiants);
     }
+
 }

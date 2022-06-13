@@ -21,4 +21,9 @@ public class Filiere implements Serializable {
     private Type type;
     @OneToMany(mappedBy = "filiere")
     private Set<Etudiant> etudiants;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Professeur extends Personne implements Serializable {
     private String grade;
     @OneToMany(mappedBy = "professeur")
@@ -23,4 +24,12 @@ public class Professeur extends Personne implements Serializable {
     @ManyToOne
     private Extern extern;
 
+    public Professeur(String nom, String prenom, Date dateNaissance, String CINE, String grade, Collection<ProfesseurModule> professeurModules, Collection<Surveillant> surveillants, Collection<Jury> juries, Extern extern) {
+        super(nom, prenom, dateNaissance, CINE);
+        this.grade = grade;
+        this.professeurModules = professeurModules;
+        this.surveillants = surveillants;
+        this.juries = juries;
+        this.extern = extern;
+    }
 }

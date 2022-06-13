@@ -14,5 +14,11 @@ class FiliereService {
     public Filiere getFiliere(int id) {
         return filiereRepository.findById(id).orElse(null);
     }
+    public List<Filiere> getAllFiliere(){
+        return filiereRepository.findAll();
+    }
+    public Filiere getFiliereByName(String s){
+        return filiereRepository.findByName(s);
+    }
 }
 

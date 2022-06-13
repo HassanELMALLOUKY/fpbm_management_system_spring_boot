@@ -1,6 +1,7 @@
 package com.fpbmv1.demo.services.Gestion_Examen;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.fpbmv1.demo.entites.Etudiant;
@@ -42,15 +43,19 @@ public class EtudiantExcelImport {
                         String nom = row.getCell(0).getStringCellValue();
                         String prenom = row.getCell(1).getStringCellValue();
                         String CINE = row.getCell(2).getStringCellValue();
-                        String cne = row.getCell(3).getStringCellValue();
-                        int filiere= (int) row.getCell(4).getNumericCellValue();
+                        long appoge= (long) row.getCell(3).getNumericCellValue();
+                        String cne = row.getCell(4).getStringCellValue();
+                        String filiere=row.getCell(5).getStringCellValue();
+                        Date dateN=row.getCell(6).getDateCellValue();
 
                         Etudiant etudiant = new Etudiant();
                         etudiant.setNom(nom);
                         etudiant.setPrenom(prenom);
                         etudiant.setCne(cne);
                         etudiant.setCINE(CINE);
-                        etudiant.setFiliere(filiereService.getFiliere(filiere));
+                        etudiant.setAppogee(appoge);
+                        etudiant.setDateNaissance(dateN);
+                        etudiant.setFiliere(filiereService.getFiliereByName(filiere));
 
                         etudiants.add(etudiant);
                     }
