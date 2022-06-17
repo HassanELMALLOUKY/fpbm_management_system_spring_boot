@@ -15,14 +15,15 @@ public class Module implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String groupe;
+    private String name;
+
     @ManyToOne
     private Semestre semestre;
     @OneToMany(mappedBy = "module")
     private Collection<ProfesseurModule> professeurModules;
 
-    public Module(String groupe, Semestre semestre, Collection<ProfesseurModule> professeurModules) {
-        this.groupe = groupe;
+    public Module(String name, Semestre semestre, Collection<ProfesseurModule> professeurModules) {
+        this.name = name;
         this.semestre = semestre;
         this.professeurModules = professeurModules;
     }

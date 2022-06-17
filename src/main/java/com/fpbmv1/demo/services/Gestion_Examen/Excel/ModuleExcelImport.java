@@ -1,10 +1,9 @@
-package com.fpbmv1.demo.services.Gestion_Examen;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+package com.fpbmv1.demo.services.Gestion_Examen.Excel;
 
-import com.fpbmv1.demo.entites.Etudiant;
+import com.fpbmv1.demo.entites.Module;
+
+import com.fpbmv1.demo.services.Gestion_Examen.ModuleService;
+import com.fpbmv1.demo.services.SemestreService;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,19 +11,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class EtudiantExcelImport {
-    private EtudiantService etudiantService;
-    private FiliereService filiereService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-    public EtudiantExcelImport(EtudiantService etudiantService, FiliereService filiereService) {
-        this.etudiantService = etudiantService;
-        this.filiereService = filiereService;
+@Service
+public class ModuleExcelImport {
+    private ModuleService moduleService;
+    private SemestreService semestreService;
+
+    public ModuleExcelImport(ModuleService moduleService, SemestreService semestreService) {
+        this.moduleService = moduleService;
+        this.semestreService = semestreService;
     }
 
     public void importToDb(List<MultipartFile> multipartfiles) {
         if (!multipartfiles.isEmpty()) {
-            List<Etudiant> etudiants = new ArrayList<>();
+            //List<Module> modules = new ArrayList<>();
+            List<Module> modules=new ArrayList<>();
             multipartfiles.forEach(multipartfile -> {
                 try {
                     XSSFWorkbook workBook = new XSSFWorkbook(multipartfile.getInputStream());
@@ -39,32 +43,24 @@ public class EtudiantExcelImport {
                             continue;
                         }
                         String nom = row.getCell(0).getStringCellValue();
-                        String prenom = row.getCell(1).getStringCellValue();
-                        String CINE = row.getCell(2).getStringCellValue();
-                        long appoge= (long) row.getCell(3).getNumericCellValue();
-                        String cne = row.getCell(4).getStringCellValue();
-                        String filiere=row.getCell(5).getStringCellValue();
-                        Date dateN=row.getCell(6).getDateCellValue();
+                        String semestre=row.getCell(5).getStringCellValue();
 
-                        Etudiant etudiant = new Etudiant();
-                        etudiant.setNom(nom);
-                        etudiant.setPrenom(prenom);
-                        etudiant.setCne(cne);
-                        etudiant.setCINE(CINE);
-                        etudiant.setAppogee(appoge);
-                        etudiant.setDateNaissance(dateN);
-                        etudiant.setFiliere(filiereService.getFiliereByName(filiere));
 
-                        etudiants.add(etudiant);
+                        Module module = new Module();
+                        module.setName(nom);
+
+                        module.setSemestre(semestreService.getByName(semestre));
+
+                        modules.add(module);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
 
-            if (!etudiants.isEmpty()) {
+            if (!modules.isEmpty()) {
                 // save to database
-                etudiantService.saveAll(etudiants);
+                moduleService.saveAll(modules);
             }
         }
     }

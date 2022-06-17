@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>module Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div th:replace="header :: myheader"></div>
+    <div class="container my-2">
+        <h1>Students List</h1>
+
+        <a th:href="@{/showNewmoduleForm}" class="btn btn-primary btn-sm mb-3"> Add module </a>
+        <a th:href="@{/deleteAll}" class="btn btn-danger btn-sm mb-3"> Delete All Students </a>
+        <form action="#" th:action="@{/modules/import-to-db}" method="post" enctype="multipart/form-data">
+            <div class="btn-group">
+                <input class="form-control" type="file" name="file">
+                <button type="submit" class="btn-primary">Send</button>
+            </div>
+        </form>
+        <br><br>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Semestre</th>
+                <th> Actions </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="module : ${listModules}">
+                <td th:text="${module.name}"></td>
+                <td th:text="${module.semestre}"></td>
+                <td> <a th:href="@{/modules/showFormForUpdate/{id}(id=${module.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/modules/deletemodule/{id}(id=${module.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
