@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Service
 public class PvsService {
-    private static int nbEtudiantsCourants=0;
+    //private static int nbEtudiantsCourants=1;
     private static int index=0;
     private Pv pv;
     @Autowired
@@ -43,16 +43,18 @@ public class PvsService {
         //List<Surveillant> surveillantList=surveillantService.getAllSurveillants();
         List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
         int restEtud=etudiants.size();
-        while(restEtud>0){
+        while(restEtud>0 ){
            // System.out.println(restEtud);
             Pv pv=new Pv();
             pv.setLocal(salles.get(index).getName());
+            pv.setModule(m.getName());
             if(restEtud>salles.get(index).getCapaciteEtudiant()){
                 pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
-                nbEtudiantsCourants=salles.get(index).getCapaciteEtudiant()-1;
+                //etudiants.remove(salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants);
+                nbEtudiantsCourants=salles.get(index).getCapaciteEtudiant();
 
             }else{
-                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,restEtud+1));
+                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants+salles.get(index).getCapaciteEtudiant(),etudiants.size()));
                 //nbEtudiantsCourants=restEtud;
 
             }
@@ -60,7 +62,7 @@ public class PvsService {
 
             restEtud -=salles.get(index).getCapaciteEtudiant();
             index++;
-            pv.setModule(m.getName());
+
             pvs.add(pv);
 
 
