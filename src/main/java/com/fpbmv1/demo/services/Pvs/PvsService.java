@@ -1,0 +1,76 @@
+package com.fpbmv1.demo.services.Pvs;
+
+import com.fpbmv1.demo.Pvs.Pv;
+import com.fpbmv1.demo.entites.*;
+import com.fpbmv1.demo.entites.Module;
+import com.fpbmv1.demo.services.Gestion_Examen.*;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+@Data
+@Service
+public class PvsService {
+    private static int nbEtudiantsCourants=0;
+    private static int index=0;
+    private Pv pv;
+    @Autowired
+    private SurveillantService surveillantService;
+    @Autowired
+    private ProfesseurService professeurService;
+    @Autowired
+    private SalleService salleService;
+    @Autowired
+    private ExamenService examenService;
+    @Autowired
+    private EtudiantService etudiantService;
+    @Autowired
+    private FiliereService filiereService;
+    @Autowired
+    private SemestreService semestreService;
+    @Autowired
+    private ModuleService moduleService;
+
+    public List<Pv> makePv(String filiere,String semestre, String module){
+        int nbEtudiantsCourants=0;
+        Filiere f=filiereService.getFiliereByName(filiere);
+        Semestre s=semestreService.getFiliereByName(semestre);
+        Module m=moduleService.getFiliereByName(module);
+        List<Salle> salles=salleService.getAllSalles();
+        List<Pv> pvs=new ArrayList<Pv>();
+        //List<Surveillant> surveillantList=surveillantService.getAllSurveillants();
+        List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
+        int restEtud=etudiants.size();
+        while(restEtud>0){
+           // System.out.println(restEtud);
+            Pv pv=new Pv();
+            pv.setLocal(salles.get(index).getName());
+            if(restEtud>salles.get(index).getCapaciteEtudiant()){
+                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
+                nbEtudiantsCourants=salles.get(index).getCapaciteEtudiant()-1;
+
+            }else{
+                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,restEtud+1));
+                //nbEtudiantsCourants=restEtud;
+
+            }
+            //pv.setSurveillants(surveillantList.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()-1));
+
+            restEtud -=salles.get(index).getCapaciteEtudiant();
+            index++;
+            pv.setModule(m.getName());
+            pvs.add(pv);
+
+
+
+        }
+
+
+        return pvs;
+
+
+
+    }
+}

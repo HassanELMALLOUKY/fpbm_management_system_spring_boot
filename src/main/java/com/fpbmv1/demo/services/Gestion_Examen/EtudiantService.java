@@ -22,7 +22,7 @@ public class EtudiantService{
     }
 
     public Etudiant saveEtudiant(Etudiant etudiant) {
-       //hhhhhh
+
         return etudiantRepository.save(etudiant);
     }
 
@@ -36,6 +36,9 @@ public class EtudiantService{
 
     public void saveAll(List<Etudiant> etudiants) {
         etudiantRepository.saveAll(etudiants);
+    }
+   public List<Etudiant> getEtudiantsByFiliere(String f,String s,String m){
+        return etudiantRepository.getEtudiantsByFiliere(f,s,m);
     }
 
 }

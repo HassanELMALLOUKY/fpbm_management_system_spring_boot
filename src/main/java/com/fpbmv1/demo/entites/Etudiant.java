@@ -1,5 +1,6 @@
 package com.fpbmv1.demo.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -14,7 +15,8 @@ import java.util.Date;
 public class Etudiant extends Personne implements Serializable {
     private long appogee;
     private String cne;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     private Filiere filiere;
 
     public Etudiant(String nom, String prenom, Date dateNaissance, String CINE, long appogee, String cne, Filiere filiere) {

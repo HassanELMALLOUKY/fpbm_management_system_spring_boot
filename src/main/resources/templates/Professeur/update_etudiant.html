@@ -11,11 +11,11 @@
 <body>
 <div th:replace="header :: myheader"></div>
 <div class="container">
-    <h1>Etudiant Management System</h1>
+    <h1>Professeur Management System</h1>
     <hr>
-    <h2>Update Etudiant</h2>
+    <h2>Update Professeur</h2>
 
-    <form action="#" th:action="@{/etudiant/saveEtudiant}" th:object="${etudiant}" method="POST">
+    <form action="#" th:action="@{/professeur/saveProfesseur}" th:object="${professeur}" method="POST">
 
         <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{id}" />
@@ -26,23 +26,16 @@
 
         <input type="text" th:field="*{CINE}" class="form-control mb-4 col-4">
 
-        <input type="number" th:field="*{appogee}" placeholder="Appogee" class="form-control mb-4 col-4">
+        <input type="number" th:field="*{grade}" placeholder="Appogee" class="form-control mb-4 col-4">
 
         <input type="Date" th:field="*{dateNaissance}" placeholder="Date de Naissance" class="form-control mb-4 col-4">
 
-        <p>Filiere :</p>
-        <select  class="form-select" aria-label="Default select example">
-            <div th:each="filiere : ${filieres}">
-                <option th:value="${filiere.name}" th:text="${filiere.name}"></option>
-            </div>
-        </select>
-
-        <button type="submit" class="btn btn-info col-2"> Update Etudiant</button>
+        <button type="submit" class="btn btn-info col-2"> Update Professeur</button>
     </form>
 
     <hr>
 
-    <a th:href="@{/etudiant}"> Back to Etudiant List</a>
+    <a th:href="@{/professeur}"> Back to Professeur List</a>
 </div>
 </body>
 

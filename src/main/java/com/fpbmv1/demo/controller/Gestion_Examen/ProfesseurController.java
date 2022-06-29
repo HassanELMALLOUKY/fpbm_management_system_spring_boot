@@ -1,9 +1,9 @@
 package com.fpbmv1.demo.controller.Gestion_Examen;
 
 import com.fpbmv1.demo.entites.Etudiant;
-import com.fpbmv1.demo.entites.Filiere;
+import com.fpbmv1.demo.entites.Professeur;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantExcelImport;
-import com.fpbmv1.demo.services.Gestion_Examen.EtudiantService;
+import com.fpbmv1.demo.services.Gestion_Examen.ProfesseurService;
 import com.fpbmv1.demo.services.Gestion_Examen.FiliereService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/etudiant")
-public class EtudiantController {
+@RequestMapping("/professeur")
+public class ProfesseurController {
 
     @Autowired
-    private EtudiantService etudiantService;
+    private ProfesseurService professeurService;
     @Autowired
     private FiliereService filiereService;
     @Autowired
@@ -26,31 +26,30 @@ public class EtudiantController {
 
 
     // display list of etudiants
-    @GetMapping("/all")
-    public String viewHomePage(Model model) {
-        model.addAttribute("listEtudiants", etudiantService.getAllStudents());
-        return "Etudiant/index";
-    }
     @GetMapping()
+    public List<Professeur> viewHomePage(Model model) {
+        /*model.addAttribute("listProfesseurs", professeurService.getAllStudents());
+        return "Professeur/index";*/
+        return professeurService.getAllStudents();
+    }
+    @GetMapping("/home")
     public String home(){
         return "Home";
     }
 
-    @GetMapping("/showNewEtudiantForm")
-    public String showNewEtudiantForm(Model model) {
+    @GetMapping("/showNewProfesseurForm")
+    public String showNewProfesseurForm(Model model) {
         // create model attribute to bind form data
-        Etudiant etudiant = new Etudiant();
-        //Filiere filiere = new Filiere();
-        model.addAttribute("filieres",filiereService.getAllFiliere());
-        model.addAttribute("etudiant", etudiant);
-        return "Etudiant/new_etudiant";
+        Professeur professeur = new Professeur();
+        model.addAttribute("professeur", professeur);
+        return "Professeur/new_etudiant";
     }
 
-    @PostMapping("/saveEtudiant")
-    public String saveEtudiant(@ModelAttribute("etudiant") Etudiant etudiant) {
+    @PostMapping("/saveProfesseur")
+    public String saveProfesseur(@ModelAttribute("etudiant") Professeur professeur) {
         //etudiant.setFiliere(filiereService.getFiliereByName(nameF));
         // save etudiant to database
-        etudiantService.saveEtudiant(etudiant);
+        professeurService.saveProfesseur(professeur);
         return "redirect:/";
     }
 
@@ -58,25 +57,24 @@ public class EtudiantController {
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
 
         // get etudiant from the service
-        Etudiant etudiant = etudiantService.getEtudiantById(id);
+        Professeur professeur = professeurService.getProfesseurById(id);
 
         // set etudiant as a model attribute to pre-populate the form
-        model.addAttribute("etudiant", etudiant);
-        model.addAttribute("filieres",filiereService.getAllFiliere());
+        model.addAttribute("professeur", professeur);
 
-        return "Etudiant/update_etudiant";
+        return "Professeur/update_etudiant";
     }
 
-    @GetMapping("/deleteEtudiant/{id}")
-    public String deleteEtudiant(@PathVariable(value = "id") int id) {
+    @GetMapping("/deleteProfesseur/{id}")
+    public String deleteProfesseur(@PathVariable(value = "id") int id) {
 
         // call delete etudiant method 
-        this.etudiantService.deleteEtudiant(id);
+        this.professeurService.deleteProfesseur(id);
         return "redirect:/";
     }
     @GetMapping("/deleteAll")
     public String deleteAll(){
-        this.etudiantService.deleteAll();
+        this.professeurService.deleteAll();
         return "redirect:/";
     }
     @PostMapping(path = "/import-to-db")
@@ -84,10 +82,6 @@ public class EtudiantController {
         etudiantExcelImport.importToDb(file);
         return "redirect:/";
 
-    }
-    @GetMapping("test")
-    public List<Etudiant> getEtudiantsByFiliere(){
-        return etudiantService.getEtudiantsByFiliere("ISI","S1","Spring");
     }
 
 }

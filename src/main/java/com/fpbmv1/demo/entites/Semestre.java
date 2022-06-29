@@ -18,6 +18,10 @@ public class Semestre implements Serializable {
     private String name;
     @OneToMany(mappedBy = "semestre")
     private Collection<Module> modules;
+    @OneToMany(mappedBy = "semestre")
+    private Collection<Module> moduleList;
+    @ManyToOne
+    private Filiere filiere;
 
     public Semestre(String name, Collection<Module> modules) {
         this.name = name;

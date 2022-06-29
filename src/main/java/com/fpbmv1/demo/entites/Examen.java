@@ -15,14 +15,13 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Examen implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Date dateExamen;
     private String heure;
     @ManyToOne
     private Salle salle;
-    @OneToMany(mappedBy = "examen")
+    @OneToMany(mappedBy = "examen",fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
-    @OneToMany(mappedBy = "examen")
-    private Collection<ExamenProfesseurModuleEtudiant> examenProfesseurModuleEtudiants;
 }

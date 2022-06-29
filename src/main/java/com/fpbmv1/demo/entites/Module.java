@@ -1,12 +1,10 @@
 package com.fpbmv1.demo.entites;
-
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Entity
 @Data
@@ -15,15 +13,19 @@ public class Module implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String groupe;
+    private String name;
     @ManyToOne
     private Semestre semestre;
-    @OneToMany(mappedBy = "module")
-    private Collection<ProfesseurModule> professeurModules;
+    @ManyToOne
+    private Filiere filiere;
 
-    public Module(String groupe, Semestre semestre, Collection<ProfesseurModule> professeurModules) {
-        this.groupe = groupe;
+    public Module(String name, Semestre semestre, Filiere filiere) {
+        this.name = name;
         this.semestre = semestre;
-        this.professeurModules = professeurModules;
+        this.filiere=filiere;
+    }
+
+    public Module(String name) {
+        this.name = name;
     }
 }

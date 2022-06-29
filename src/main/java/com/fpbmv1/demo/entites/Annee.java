@@ -17,7 +17,4 @@ public class Annee implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String annee;
-    @OneToMany(mappedBy = "annee")
-    private Collection<ProfesseurModule> professeurModules;
-
 }

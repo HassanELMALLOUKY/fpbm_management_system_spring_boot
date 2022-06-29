@@ -18,10 +18,8 @@ public class Salle implements Serializable {
     private String name;
     private int capaciteEtudiant;
     private int nombreSurveillant;
-    @OneToMany(mappedBy = "salle")
+    @OneToMany(mappedBy = "salle", fetch = FetchType.LAZY)
     private Collection<Examen> examens;
-    @OneToMany(mappedBy = "salle")
-    private Collection<Soutenance> soutenances;
 
     public Salle(String name, int capaciteEtudiant, int nombreSurveillant, Collection<Examen> examens) {
         this.name = name;

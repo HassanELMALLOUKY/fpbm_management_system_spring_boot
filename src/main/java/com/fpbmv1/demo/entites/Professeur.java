@@ -15,21 +15,16 @@ import java.util.Date;
 @NoArgsConstructor
 public class Professeur extends Personne implements Serializable {
     private String grade;
-    @OneToMany(mappedBy = "professeur")
-    private Collection<ProfesseurModule> professeurModules;
-    @OneToMany(mappedBy = "professeur")
+    @OneToMany(mappedBy = "professeur",fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
-    @OneToMany(mappedBy = "professeur")
-    private Collection<Jury> juries;
-    @ManyToOne
+    @ManyToOne()
     private Extern extern;
 
-    public Professeur(String nom, String prenom, Date dateNaissance, String CINE, String grade, Collection<ProfesseurModule> professeurModules, Collection<Surveillant> surveillants, Collection<Jury> juries, Extern extern) {
+
+    public Professeur(String nom, String prenom, Date dateNaissance, String CINE, String grade, Collection<Surveillant> surveillants, Extern extern) {
         super(nom, prenom, dateNaissance, CINE);
         this.grade = grade;
-        this.professeurModules = professeurModules;
         this.surveillants = surveillants;
-        this.juries = juries;
         this.extern = extern;
     }
 }

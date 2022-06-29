@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Surveillant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Examen examen;
     @ManyToOne
     private Professeur professeur;

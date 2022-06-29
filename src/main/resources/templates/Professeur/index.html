@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="ISO-8859-1">
-    <title>Etudiant Management System</title>
+    <title>Professeur Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
@@ -13,9 +13,9 @@
     <div class="container my-2">
         <h1>Students List</h1>
 
-        <a th:href="@{/etudiant/showNewEtudiantForm}" class="btn btn-primary btn-sm mb-3"> Add Etudiant </a>
-        <a th:href="@{/etudiant/deleteAll}" class="btn btn-danger btn-sm mb-3"> Delete All Students </a>
-        <form action="#" th:action="@{/etudiant/import-to-db}" method="post" enctype="multipart/form-data">
+        <a th:href="@{/professeur/showNewProfesseurForm}" class="btn btn-primary btn-sm mb-3"> Add Professeur </a>
+        <a th:href="@{/professeur/deleteAll}" class="btn btn-danger btn-sm mb-3"> Delete All Students </a>
+        <form action="#" th:action="@{/professeur/import-to-db}" method="post" enctype="multipart/form-data">
             <div class="btn-group">
                 <input class="form-control" type="file" name="file">
                 <button type="submit" class="btn-primary">Send</button>
@@ -28,22 +28,20 @@
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>CINE</th>
-                <th>Appogee</th>
+                <th>Grade</th>
                 <th>Date Naissance</th>
-                <th>Filiere</th>
                 <th> Actions </th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="etudiant : ${listEtudiants}">
-                <td th:text="${etudiant.nom}"></td>
-                <td th:text="${etudiant.prenom}"></td>
-                <td th:text="${etudiant.CINE}"></td>
-                <td th:text="${etudiant.appogee}"></td>
-                <td th:text="${etudiant.dateNaissance}"></td>
-                <td th:text="${etudiant.filiere}"></td>
-                <td> <a th:href="@{/etudiant/showFormForUpdate/{id}(id=${etudiant.id})}" class="btn btn-primary">Update</a>
-                    <a th:href="@{/etudiant/deleteEtudiant/{id}(id=${etudiant.id})}" class="btn btn-danger">Delete</a>
+            <tr th:each="professeur : ${listProfesseurs}">
+                <td th:text="${professeur.nom}"></td>
+                <td th:text="${professeur.prenom}"></td>
+                <td th:text="${professeur.CINE}"></td>
+                <td th:text="${professeur.grade}"></td>
+                <td th:text="${professeur.dateNaissance}"></td>
+                <td> <a th:href="@{/professeur/showFormForUpdate/{id}(id=${professeur.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/professeur/deleteProfesseur/{id}(id=${professeur.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>
