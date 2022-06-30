@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class PvsService {
     //private static int nbEtudiantsCourants=1;
-    private static int index=0;
     private Pv pv;
     @Autowired
     private SurveillantService surveillantService;
@@ -43,19 +42,22 @@ public class PvsService {
         //List<Surveillant> surveillantList=surveillantService.getAllSurveillants();
         List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
         int restEtud=etudiants.size();
+        // indice de la salle dans la base
+        int index=0;
+
         while(restEtud>0 ){
-           // System.out.println(restEtud);
+
             Pv pv=new Pv();
+            String p = salles.get(index).getName();
             pv.setLocal(salles.get(index).getName());
+
             pv.setModule(m.getName());
             if(restEtud>salles.get(index).getCapaciteEtudiant()){
                 pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
-                //etudiants.remove(salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants);
-                nbEtudiantsCourants=salles.get(index).getCapaciteEtudiant();
+                nbEtudiantsCourants+=salles.get(index).getCapaciteEtudiant();
 
             }else{
-                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants+salles.get(index).getCapaciteEtudiant(),etudiants.size()));
-                //nbEtudiantsCourants=restEtud;
+                pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,etudiants.size()));
 
             }
             //pv.setSurveillants(surveillantList.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()-1));
@@ -73,6 +75,11 @@ public class PvsService {
         return pvs;
 
 
+
+    }
+    public Filiere makepv2(String filiere){
+        Filiere f=filiereService.getFiliereByName(filiere);
+        return f;
 
     }
 }

@@ -2,9 +2,7 @@ package com.fpbmv1.demo.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,16 +21,17 @@ public class Filiere implements Serializable {
     @ManyToOne
     private Type type;
     @JsonIgnore
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "filiere", fetch = FetchType.LAZY)
     private Set<Etudiant> etudiants;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne
     private Departement departement;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "filiere",fetch = FetchType.LAZY)
     private Collection<Module> modules;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "filiere",fetch = FetchType.LAZY)
     private Collection<Semestre> semestres;
-    @Override
-    public String toString() {
-        return name;
-    }
+
 }

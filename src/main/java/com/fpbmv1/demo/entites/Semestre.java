@@ -1,8 +1,6 @@
 package com.fpbmv1.demo.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +14,10 @@ public class Semestre implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "semestre")
     private Collection<Module> modules;
-    @OneToMany(mappedBy = "semestre")
-    private Collection<Module> moduleList;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne
     private Filiere filiere;
 
