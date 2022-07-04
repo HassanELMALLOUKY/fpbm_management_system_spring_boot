@@ -1,8 +1,7 @@
 package com.fpbmv1.demo.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,9 +12,15 @@ import java.io.Serializable;
 public class Surveillant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String nom;
+    private String prenom;
+    @JsonIgnore
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private Examen examen;
-    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     private Professeur professeur;
 
     public Surveillant(Examen examen, Professeur professeur) {

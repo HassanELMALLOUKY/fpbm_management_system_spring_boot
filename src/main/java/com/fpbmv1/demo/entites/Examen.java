@@ -1,8 +1,6 @@
 package com.fpbmv1.demo.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +20,7 @@ public class Examen implements Serializable {
     private String heure;
     @ManyToOne
     private Salle salle;
-    @OneToMany(mappedBy = "examen",fetch = FetchType.LAZY)
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
 }

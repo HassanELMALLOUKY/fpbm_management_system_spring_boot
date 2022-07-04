@@ -67,8 +67,8 @@ public class EtudiantController {
         return "Etudiant/update_etudiant";
     }
 
-    @GetMapping("/deleteEtudiant/{id}")
-    public String deleteEtudiant(@PathVariable(value = "id") int id) {
+    @GetMapping("/deleteEtudiant/{ID}")
+    public String deleteEtudiant(@PathVariable(value = "ID") int id) {
 
         // call delete etudiant method 
         this.etudiantService.deleteEtudiant(id);

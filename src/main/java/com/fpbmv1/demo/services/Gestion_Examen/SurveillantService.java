@@ -1,10 +1,14 @@
 package com.fpbmv1.demo.services.Gestion_Examen;
 
+import com.fpbmv1.demo.entites.Professeur;
 import com.fpbmv1.demo.entites.Surveillant;
+import com.fpbmv1.demo.models.SurveillantsNameModel;
 import com.fpbmv1.demo.repository.SurveillantRepository;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class SurveillantService {
@@ -37,5 +41,17 @@ public class SurveillantService {
 
     public void saveAll(List<Surveillant> professeurs) {
         surveillantRepository.saveAll(professeurs);
+    }
+    public List<Surveillant> getSurveillantNames(){
+        List<Surveillant> surveillants=new ArrayList<>();
+        List<Object[]> result=surveillantRepository.getSurveillantNames();
+        for (Object o[] : result){
+            Surveillant s=(Surveillant) o[0];
+            Professeur p=(Professeur) o[1];
+            s.setNom(p.getNom());
+            s.setPrenom(p.getPrenom());
+            surveillants.add(s);
+        }
+            return surveillants;
     }
 }

@@ -1,8 +1,6 @@
 package com.fpbmv1.demo.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,8 +13,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class Professeur extends Personne implements Serializable {
     private String grade;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "professeur",fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne()
     private Extern extern;
 
