@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EtudiantService{
+public class EtudiantService {
     @Autowired
     private EtudiantRepository etudiantRepository;
 
@@ -30,15 +30,23 @@ public class EtudiantService{
         etudiantRepository.deleteById(id);
 
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         etudiantRepository.deleteAll();
     }
 
     public void saveAll(List<Etudiant> etudiants) {
         etudiantRepository.saveAll(etudiants);
     }
-   public List<Etudiant> getEtudiantsByFiliere(String f,String s,String m){
-        return etudiantRepository.getEtudiantsByFiliere(f,s,m);
+
+    public List<Etudiant> getEtudiantsByFiliere(String f, String s, String m) {
+        return etudiantRepository.getEtudiantsByFiliere(f, s, m);
     }
+    public void updateEtudient(Etudiant etudiant,Long id) {
+        etudiant.setId(Math.toIntExact(id));
+        etudiantRepository.save(etudiant);
+        //etudiantRepository.saveAll(etudiants);
+    }
+
 
 }

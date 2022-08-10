@@ -32,8 +32,9 @@ public class ProfesseurController {
         return "Professeur/index";*/
         return professeurService.getAllStudents();
     }
+
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "Home";
     }
 
@@ -72,11 +73,13 @@ public class ProfesseurController {
         this.professeurService.deleteProfesseur(id);
         return "redirect:/";
     }
+
     @GetMapping("/deleteAll")
-    public String deleteAll(){
+    public String deleteAll() {
         this.professeurService.deleteAll();
         return "redirect:/";
     }
+
     @PostMapping(path = "/import-to-db")
     public String importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
         etudiantExcelImport.importToDb(file);

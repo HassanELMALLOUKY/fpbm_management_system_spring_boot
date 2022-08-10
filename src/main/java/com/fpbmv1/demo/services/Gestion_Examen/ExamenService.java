@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class ExamenService {
     @Autowired
     private ExamenRepository examenRepository;
+
     public List<Examen> getAllExamen() {
         return examenRepository.findAll();
     }
@@ -28,7 +30,8 @@ public class ExamenService {
         examenRepository.deleteById(id);
 
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         examenRepository.deleteAll();
     }
 

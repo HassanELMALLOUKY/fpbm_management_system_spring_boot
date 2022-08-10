@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 public class PvController {
-    List<Pv> pvs=new ArrayList<>();
+    List<Pv> pvs = new ArrayList<>();
     @Autowired
     private PvsService pvsService;
     @Autowired
@@ -33,20 +33,23 @@ public class PvController {
     private ModuleService moduleService;
     @Autowired
     private SurveillantService surveillantService;
+
     @GetMapping("/pv")
-    public List<Pv> addPvs(){
-        Module m=new Module("spring boot");
+    public List<Pv> addPvs() {
+        Module m = new Module("spring boot");
         //pvs.add(pvsService.makePv(salleService.getSalleById(1),m));
         //pvs.add(pvsService.makePv(salleService.getSalleById(2),m));
         return pvs;
     }
+
     @GetMapping("/test/{f}/{semestre}/{module}")
-    public List<Pv> test(@PathVariable  String semestre, @PathVariable String module,@PathVariable(value = "f") String filiere){
-        return pvsService.makePv(filiere,semestre,module) ;
+    public List<Pv> test(@PathVariable String semestre, @PathVariable String module, @PathVariable(value = "f") String filiere) {
+        return pvsService.makePv(filiere, semestre, module);
 
     }
+
     @GetMapping("/surveillants")
-    public List<Surveillant> survei(){
+    public List<Surveillant> survei() {
         return surveillantService.getSurveillantNames();
     }
 

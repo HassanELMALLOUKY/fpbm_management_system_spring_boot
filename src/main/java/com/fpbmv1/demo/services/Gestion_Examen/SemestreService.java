@@ -14,13 +14,16 @@ public
 class SemestreService {
     @Autowired
     private SemestreRepository semestreRepository;
+
     public Semestre getFiliere(int id) {
         return semestreRepository.findById(id).orElse(null);
     }
-    public List<Semestre> getAllFiliere(){
+
+    public List<Semestre> getAllFiliere() {
         return semestreRepository.findAll();
     }
-    public Semestre getFiliereByName(String s){
+
+    public Semestre getFiliereByName(String s) {
         return semestreRepository.findByName(s);
     }
 }

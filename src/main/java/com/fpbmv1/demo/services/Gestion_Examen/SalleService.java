@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class SalleService {
     @Autowired
@@ -30,7 +31,8 @@ public class SalleService {
         salleRepository.deleteById(id);
 
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         salleRepository.deleteAll();
     }
 

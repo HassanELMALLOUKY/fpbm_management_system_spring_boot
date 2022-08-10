@@ -1,4 +1,5 @@
 package com.fpbmv1.demo.services.Gestion_Examen;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class EtudiantExcelImport {
 
                     XSSFSheet sheet = workBook.getSheetAt(0);
                     // looping through each row
-                    for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0) ; rowIndex++) {
+                    for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0); rowIndex++) {
                         // current row
                         XSSFRow row = sheet.getRow(rowIndex);
                         // skip the first row because it is a header row
@@ -43,10 +44,10 @@ public class EtudiantExcelImport {
                         String nom = row.getCell(0).getStringCellValue();
                         String prenom = row.getCell(1).getStringCellValue();
                         String CINE = row.getCell(2).getStringCellValue();
-                        long appoge= (long) row.getCell(3).getNumericCellValue();
+                        long appoge = (long) row.getCell(3).getNumericCellValue();
                         String cne = row.getCell(4).getStringCellValue();
-                        String filiere=row.getCell(5).getStringCellValue();
-                        Date dateN=row.getCell(6).getDateCellValue();
+                        String filiere = row.getCell(5).getStringCellValue();
+                        Date dateN = row.getCell(6).getDateCellValue();
 
                         Etudiant etudiant = new Etudiant();
                         etudiant.setNom(nom);
@@ -85,4 +86,8 @@ public class EtudiantExcelImport {
         }
         return numOfNonEmptyCells;
     }
+
+
+
+
 }

@@ -10,15 +10,18 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 @Entity
 @Data
 @NoArgsConstructor
 public class Etudiant extends Personne implements Serializable {
     private long appogee;
     private String cne;
-    @JsonIgnore
-    @ToString.Exclude @EqualsAndHashCode.Exclude
+
+   // @ToString.Exclude
+   // @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private Filiere filiere;
 
     public Etudiant(String nom, String prenom, Date dateNaissance, String CINE, long appogee, String cne, Filiere filiere) {

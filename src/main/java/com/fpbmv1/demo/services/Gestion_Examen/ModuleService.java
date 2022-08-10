@@ -12,13 +12,16 @@ public
 class ModuleService {
     @Autowired
     private ModuleRepository moduleRepository;
+
     public Module getFiliere(int id) {
         return moduleRepository.findById(id).orElse(null);
     }
-    public List<Module> getAllFiliere(){
+
+    public List<Module> getAllFiliere() {
         return moduleRepository.findAll();
     }
-    public Module getFiliereByName(String s){
+
+    public Module getFiliereByName(String s) {
         return moduleRepository.findByName(s);
     }
 }

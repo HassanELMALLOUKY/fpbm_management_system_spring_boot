@@ -6,18 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public
 class FiliereService {
     @Autowired
     private FiliereRepository filiereRepository;
+
     public Filiere getFiliere(int id) {
         return filiereRepository.findById(id).orElse(null);
     }
-    public List<Filiere> getAllFiliere(){
+
+    public List<Filiere> getAllFiliere() {
         return filiereRepository.findAll();
     }
-    public Filiere getFiliereByName(String s){
+
+    public Filiere getFiliereByName(String s) {
         return filiereRepository.findByName(s);
     }
 }

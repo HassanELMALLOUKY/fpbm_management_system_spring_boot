@@ -31,7 +31,8 @@ public class ProfesseurService {
         professeurRepository.deleteById(id);
 
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         professeurRepository.deleteAll();
     }
 

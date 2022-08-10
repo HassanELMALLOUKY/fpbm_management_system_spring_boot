@@ -16,7 +16,8 @@ public class Salle implements Serializable {
     private String name;
     private int capaciteEtudiant;
     private int nombreSurveillant;
-    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "salle", fetch = FetchType.LAZY)
     private Collection<Examen> examens;
 

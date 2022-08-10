@@ -20,7 +20,8 @@ public class Examen implements Serializable {
     private String heure;
     @ManyToOne
     private Salle salle;
-    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
 }

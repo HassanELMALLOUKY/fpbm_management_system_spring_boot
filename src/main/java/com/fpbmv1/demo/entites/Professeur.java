@@ -13,10 +13,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class Professeur extends Personne implements Serializable {
     private String grade;
-    @ToString.Exclude @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "professeur",fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "professeur", fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
-    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne()
     private Extern extern;
 

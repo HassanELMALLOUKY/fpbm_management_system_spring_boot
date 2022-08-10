@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class SurveillantsNameModel {
     private int id;
     private String nom;
-    private  String prenom;
+    private String prenom;
 }

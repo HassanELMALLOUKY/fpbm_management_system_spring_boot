@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Etudiant Management System</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
 <body>
@@ -26,7 +27,7 @@
         <input type="Date" th:field="*{dateNaissance}" placeholder="Date de Naissance" class="form-control mb-4 col-4">
 
         <p>Filiere :</p>
-        <select  class="form-select" aria-label="Default select example">
+        <select class="form-select" aria-label="Default select example">
             <div th:each="filiere : ${filieres}">
                 <option th:value="${filiere.name}" th:text="${filiere.name}"></option>
             </div>

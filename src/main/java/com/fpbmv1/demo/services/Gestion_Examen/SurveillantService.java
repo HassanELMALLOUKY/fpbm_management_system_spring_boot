@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class SurveillantService {
 
@@ -35,23 +36,25 @@ public class SurveillantService {
         surveillantRepository.deleteById(id);
 
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         surveillantRepository.deleteAll();
     }
 
     public void saveAll(List<Surveillant> professeurs) {
         surveillantRepository.saveAll(professeurs);
     }
-    public List<Surveillant> getSurveillantNames(){
-        List<Surveillant> surveillants=new ArrayList<>();
-        List<Object[]> result=surveillantRepository.getSurveillantNames();
-        for (Object o[] : result){
-            Surveillant s=(Surveillant) o[0];
-            Professeur p=(Professeur) o[1];
+
+    public List<Surveillant> getSurveillantNames() {
+        List<Surveillant> surveillants = new ArrayList<>();
+        List<Object[]> result = surveillantRepository.getSurveillantNames();
+        for (Object o[] : result) {
+            Surveillant s = (Surveillant) o[0];
+            Professeur p = (Professeur) o[1];
             s.setNom(p.getNom());
             s.setPrenom(p.getPrenom());
             surveillants.add(s);
         }
-            return surveillants;
+        return surveillants;
     }
 }

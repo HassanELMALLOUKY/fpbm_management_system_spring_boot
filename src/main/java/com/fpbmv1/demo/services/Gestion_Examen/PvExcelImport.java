@@ -32,7 +32,7 @@ public class PvExcelImport {
 
                     XSSFSheet sheet = workBook.getSheetAt(0);
                     // looping through each row
-                    for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0) ; rowIndex++) {
+                    for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0); rowIndex++) {
                         // current row
                         XSSFRow row = sheet.getRow(rowIndex);
                         // skip the first row because it is a header row
@@ -40,7 +40,7 @@ public class PvExcelImport {
                             continue;
                         }
                         String date = row.getCell(0).getStringCellValue();
-                        String filiere=row.getCell(1).getStringCellValue();
+                        String filiere = row.getCell(1).getStringCellValue();
                         String semestre = row.getCell(2).getStringCellValue();
                         String module = row.getCell(3).getStringCellValue();
                         String heure = row.getCell(6).getStringCellValue();
