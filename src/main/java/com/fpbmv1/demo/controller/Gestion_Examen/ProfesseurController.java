@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/professeur")
 public class ProfesseurController {
 
@@ -26,62 +27,43 @@ public class ProfesseurController {
 
 
     // display list of etudiants
-    @GetMapping()
-    public List<Professeur> viewHomePage(Model model) {
-        /*model.addAttribute("listProfesseurs", professeurService.getAllStudents());
-        return "Professeur/index";*/
-        return professeurService.getAllStudents();
-    }
-    @GetMapping("/home")
-    public String home(){
-        return "Home";
+    @GetMapping("/allprofesseur")
+    public List<Professeur> getAllprofesseur() {
+
+        return professeurService.getAllProfesseur();
     }
 
-    @GetMapping("/showNewProfesseurForm")
-    public String showNewProfesseurForm(Model model) {
-        // create model attribute to bind form data
-        Professeur professeur = new Professeur();
-        model.addAttribute("professeur", professeur);
-        return "Professeur/new_etudiant";
-    }
+
 
     @PostMapping("/saveProfesseur")
-    public String saveProfesseur(@ModelAttribute("etudiant") Professeur professeur) {
-        //etudiant.setFiliere(filiereService.getFiliereByName(nameF));
-        // save etudiant to database
-        professeurService.saveProfesseur(professeur);
-        return "redirect:/";
+    public Professeur saveProfesseur(@RequestBody Professeur professeur) {
+        return professeurService.saveProfesseur(professeur);
     }
 
-    @GetMapping("/showFormForUpdate/{id}")
-    public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
-
-        // get etudiant from the service
-        Professeur professeur = professeurService.getProfesseurById(id);
-
-        // set etudiant as a model attribute to pre-populate the form
-        model.addAttribute("professeur", professeur);
-
-        return "Professeur/update_etudiant";
+    @PutMapping ("/{id}")
+    public Professeur updateProfesseur(@RequestBody Professeur professeur, @PathVariable(name = "id") int id) {
+        professeur.setId(id);
+        return professeurService.updateProfesseur(
+                professeur, id
+        );
     }
 
-    @GetMapping("/deleteProfesseur/{id}")
-    public String deleteProfesseur(@PathVariable(value = "id") int id) {
-
-        // call delete etudiant method 
-        this.professeurService.deleteProfesseur(id);
-        return "redirect:/";
-    }
-    @GetMapping("/deleteAll")
-    public String deleteAll(){
-        this.professeurService.deleteAll();
-        return "redirect:/";
-    }
-    @PostMapping(path = "/import-to-db")
-    public String importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
-        etudiantExcelImport.importToDb(file);
-        return "redirect:/";
+    @DeleteMapping("/deleteProfesseur/{id}")
+    public Professeur deleteProfesseur(@PathVariable int id) {
+        return  professeurService.deleteProfesseur(id);
 
     }
+    @DeleteMapping("/deleteAll")
+    public Professeur deleteAll(){
+        return  professeurService.deleteAll();
+
+    }
+    @PostMapping(path = "/importToDb")
+    public Professeur importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+        return professeurService.importToDb(file);
+
+
+    }
+
 
 }
