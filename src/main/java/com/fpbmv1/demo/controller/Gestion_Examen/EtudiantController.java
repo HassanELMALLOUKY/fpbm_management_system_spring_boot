@@ -2,6 +2,7 @@ package com.fpbmv1.demo.controller.Gestion_Examen;
 
 import com.fpbmv1.demo.entites.Etudiant;
 import com.fpbmv1.demo.entites.Filiere;
+import com.fpbmv1.demo.entites.Professeur;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantExcelImport;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantService;
 import com.fpbmv1.demo.services.Gestion_Examen.FiliereService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/etudiant")
 public class EtudiantController {
 
@@ -26,63 +28,39 @@ public class EtudiantController {
 
 
     // display list of etudiants
-    @GetMapping("/all")
-    public String viewHomePage(Model model) {
-        model.addAttribute("listEtudiants", etudiantService.getAllStudents());
-        return "Etudiant/index";
-    }
-    @GetMapping()
-    public String home(){
-        return "Home";
-    }
+    @GetMapping("/alletudiant")
+    public List<Etudiant> getAlletudiant() {
 
-    @GetMapping("/showNewEtudiantForm")
-    public String showNewEtudiantForm(Model model) {
-        // create model attribute to bind form data
-        Etudiant etudiant = new Etudiant();
-        //Filiere filiere = new Filiere();
-        model.addAttribute("filieres",filiereService.getAllFiliere());
-        model.addAttribute("etudiant", etudiant);
-        return "Etudiant/new_etudiant";
+        return etudiantService.getAllStudents();
     }
 
     @PostMapping("/saveEtudiant")
-    public String saveEtudiant(@ModelAttribute("etudiant") Etudiant etudiant) {
-        //etudiant.setFiliere(filiereService.getFiliereByName(nameF));
-        // save etudiant to database
-        etudiantService.saveEtudiant(etudiant);
-        return "redirect:/";
+    public Etudiant saveEtudiant(@RequestBody Etudiant etudiant) {
+        return etudiantService.saveEtudiant(etudiant);
+    }
+    @DeleteMapping("/deleteEtudiant/{id}")
+    public Etudiant deleteEtudiant(@PathVariable int id) {
+        return  etudiantService.deleteEtudiant(id);
+
     }
 
-    @GetMapping("/showFormForUpdate/{id}")
-    public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
 
-        // get etudiant from the service
-        Etudiant etudiant = etudiantService.getEtudiantById(id);
-
-        // set etudiant as a model attribute to pre-populate the form
-        model.addAttribute("etudiant", etudiant);
-        model.addAttribute("filieres",filiereService.getAllFiliere());
-
-        return "Etudiant/update_etudiant";
+    @PutMapping ("/{id}")
+    public Etudiant updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable(name = "id") int id) {
+        etudiant.setId(id);
+        return etudiantService.updateEtudiant(
+                etudiant, id
+        );
     }
+    @DeleteMapping("/deleteAll")
+    public Etudiant deleteAll(){
+        return  etudiantService.deleteAll();
 
-    @GetMapping("/deleteEtudiant/{ID}")
-    public String deleteEtudiant(@PathVariable(value = "ID") int id) {
+    }
+    @PostMapping(path = "/importtodb")
+    public Etudiant importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+       return etudiantService.importToDb(file);
 
-        // call delete etudiant method 
-        this.etudiantService.deleteEtudiant(id);
-        return "redirect:/";
-    }
-    @GetMapping("/deleteAll")
-    public String deleteAll(){
-        this.etudiantService.deleteAll();
-        return "redirect:/";
-    }
-    @PostMapping(path = "/import-to-db")
-    public String importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
-        etudiantExcelImport.importToDb(file);
-        return "redirect:/";
 
     }
     @GetMapping("test")
