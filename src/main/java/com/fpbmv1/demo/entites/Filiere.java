@@ -31,7 +31,7 @@ public class Filiere implements Serializable {
     @OneToMany(mappedBy = "filiere",fetch = FetchType.LAZY)
     private Collection<Module> modules;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "filiere",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "filiere",fetch = FetchType.LAZY)
     private Collection<Semestre> semestres;
 
 }

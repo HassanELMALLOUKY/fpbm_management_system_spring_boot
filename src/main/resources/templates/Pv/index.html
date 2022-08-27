@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Pv Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div th:replace="header :: myheader"></div>
+    <div class="container my-2">
+        <h1>Pv List</h1>
+
+        <a th:href="@{/etudiant/showNewEtudiantForm}" class="btn btn-primary btn-sm mb-3"> Add Etudiant </a>
+        <a th:href="@{/etudiant/deleteAll}" class="btn btn-danger btn-sm mb-3"> Delete All Students </a>
+        <form action="#" th:action="@{/etudiant/import-to-db}" method="post" enctype="multipart/form-data">
+            <div class="btn-group">
+                <input class="form-control" type="file" name="file">
+                <button type="submit" class="btn-primary">Send Excel</button>
+            </div>
+        </form>
+        <br><br>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+            <tr>
+                <th>Local</th>
+                <th>Module</th>
+                <th>Heure</th>
+
+            </tr>
+            </thead>
+
+        </table>
+    </div>
+
+</body>
+
+</html>
