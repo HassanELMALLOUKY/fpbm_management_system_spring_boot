@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PvController {
@@ -60,17 +61,20 @@ public class PvController {
 
     }*/
 
-    @PostMapping(path = "/examCalender/{date}_{time}")
-    public HashMap<String, List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file, @PathVariable(name = "date") String date, @PathVariable(name = "time") String time) {
-        HashMap<String, List<Pv>> pvs = new HashMap<>();
+    @PostMapping(path = "/examCalender")
+    public HashMap<String, List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+        /*HashMap<String, List<Pv>> pvs = new HashMap<>();
         List<ExcelPv> excelPvList;
         System.out.println("hhhhh");
         excelPvList = pvsService.importToDb(file);
         System.out.println("size: "+excelPvList.size());
         System.out.println("time: "+time+" date: "+date);
         pvs=pvsService.makePv(pvsService.splitByTimeAndDate(excelPvList, time,date));
-        //salleService.freeSalle();
-        return pvs;
+        //salleService.freeSalle();*/
+        HashMap<String, List<ExcelPv>> extractExams = new HashMap<>();
+        extractExams=pvsService.importToDb(file);
+
+        return pvsService.makePv(extractExams);
 
 
     }

@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Data
 @Service
 public class PvsService {
@@ -58,76 +60,102 @@ public class PvsService {
     //Num de la salle
     private int index=0;
 
-    public HashMap<String,List<Pv>> makePv(List<ExcelPv> excelPvs){
+    public HashMap<String,List<Pv>> makePv(HashMap<String, List<ExcelPv>> extractExams){
+
         HashMap<String,List<Pv>> PvCollection = new HashMap<>();
-        excelPvs.forEach(excelPv -> {
-            System.out.println("filiere: "+excelPv.getFiliere());
-            int nbEtudiantsCourants=0;
-            int nbSurveillantsCourants=0;
-            Filiere f=filiereService.getFiliereByName(excelPv.getFiliere());
-            Semestre s=semestreService.getFiliereByName(excelPv.getSemestre());
-            Module m=moduleService.getFiliereByName(excelPv.getModule());
+        for(Map.Entry<String, List<ExcelPv>> extractExam : extractExams.entrySet()) {
+            String key = extractExam.getKey();
+            List<ExcelPv> value = extractExam.getValue();
+            System.out.println("début de date et heure : " +key);
+            value.forEach(excelPv -> {
+                System.out.println("filiere: "+excelPv.getFiliere());
+                int nbEtudiantsCourants=0;
+                int nbSurveillantsCourants=0;
+                Filiere f=filiereService.getFiliereByName(excelPv.getFiliere());
+                Semestre s=semestreService.getFiliereByName(excelPv.getSemestre());
+                Module m=moduleService.getFiliereByName(excelPv.getModule());
 
-            List<Pv> pvs=new ArrayList<Pv>();
-            List<Surveillant> surveillants=surveillantService.getSurveillantNames();
-            System.out.println("surv : "+surveillants.size());
-            List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
-            System.out.println("etd : "+etudiants.size());
-            //Le nombre d'etudiants qui pas encore affecter à une salle d'examen
-            int restEtud=etudiants.size();
+                List<Pv> pvs=new ArrayList<Pv>();
+                List<Surveillant> surveillants=surveillantService.getSurveillantNames();
+                System.out.println("surv : "+surveillants.size());
+                List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
+                System.out.println("etd : "+etudiants.size());
+                //Le nombre d'etudiants qui pas encore affecter à une salle d'examen
+                int restEtud=etudiants.size();
 
-            //Le nombre des surveillants qui pas encore affecter à une salle d'examen
-            int restSurveillants=surveillants.size();
+                //Le nombre des surveillants qui pas encore affecter à une salle d'examen
+                int restSurveillants=surveillants.size();
 
-            while(restEtud>0 && restSurveillants>0 ){
-                List<Salle> salles=salleService.getEmptySalles();
-                System.out.println("nb salles:"+salles.size());
-                Pv pv=new Pv();
-                pv.setLocalDateTime(LocalDateTime.now());
-                pv.setLocal(salles.get(index).getName());
-                pv.setModule(m.getName());
-                //distrubier les etudiants dans les salles disponibles
-                if(restEtud>salles.get(index).getCapaciteEtudiant()){
-                    pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
-                    nbEtudiantsCourants+=salles.get(index).getCapaciteEtudiant();
+                while(restEtud>0 && restSurveillants>0 ){
+                    List<Salle> salles=salleService.getEmptySalles();
 
-                }else{
-                    pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,etudiants.size()));
+
+                    //chercher la capacite des salles la plus proche du reste d'etudiants:
+                    int finalRestEtud = restEtud;
+                    //
+                    List<Integer> Rest = null;
+                    salles.forEach(salle -> {
+                        if(salle.getCapaciteEtudiant() == finalRestEtud){
+
+                        }
+                        else if(salle.getCapaciteEtudiant()<finalRestEtud){
+                            Rest.add(finalRestEtud-salle.getCapaciteEtudiant());
+                        }
+                    });
+                    //Rest.stream().min().get();
+                    System.out.println("nb salles:"+salles.size());
+                    Pv pv=new Pv();
+                    pv.setLocalDateTime(LocalDateTime.now());
+                    pv.setLocal(salles.get(index).getName());
+                    //pv.setModule(m.getName());
+                    //distrubier les etudiants dans les salles disponibles
+                    if(restEtud>salles.get(index).getCapaciteEtudiant()){
+                        pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
+                        nbEtudiantsCourants+=salles.get(index).getCapaciteEtudiant();
+
+                    }else{
+                        pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,etudiants.size()));
+
+                    }
+                    //metrre la salle occupée
+                    salles.get(index).setDisponible(false);
+                    //mettre la salle occupée
+                    salleService.updateSalle(salles.get(index),salles.get(index).getId());
+                    //distrubier les surveillants dans les salles disponibles
+                    if(restSurveillants>=salles.get(index).getNombreSurveillant()){
+                        pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
+                        nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
+                    }
+                    else{
+                        pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,surveillants.size()));
+
+                    }
+
+                    restSurveillants-=salles.get(index).getNombreSurveillant();
+                    restEtud -=salles.get(index).getCapaciteEtudiant();
+
+                    //index++;
+
+                    pvs.add(pv);
+
+
+
 
                 }
-                //metrre la salle occupée
-                salles.get(index).setDisponible(false);
-                //mettre la salle occupée
-                salleService.updateSalle(salles.get(index),salles.get(index).getId());
-                //distrubier les surveillants dans les salles disponibles
-                if(restSurveillants>salles.get(index).getNombreSurveillant()){
-                    pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
-                    nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
-                }
-                else{
-                    pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,surveillants.size()));
-
+                //si les salles ne sont pas suffisantes
+                if(restEtud>0){
+                    System.out.println("affecter : "+restEtud+" étudinats à la salle X sont: "+etudiants.subList(nbEtudiantsCourants,etudiants.size()));
                 }
 
-                restSurveillants-=salles.get(index).getNombreSurveillant();
-                restEtud -=salles.get(index).getCapaciteEtudiant();
+                PvCollection.put(excelPv.getModule(),pvs);
 
-                index++;
+            });
+            System.out.println("fin de date et heure : " +key);
+            salleService.freeSalle();
 
-                pvs.add(pv);
+        }
 
 
-
-
-            }
-            //si les salles ne sont pas suffisantes
-            if(restEtud>0){
-                System.out.println("affecter : "+restEtud+" étudinats à la salle X sont: "+etudiants.subList(nbEtudiantsCourants,etudiants.size()));
-            }
-
-            PvCollection.put(excelPv.getModule(),pvs);
-
-        });
         return PvCollection;
     }
 
@@ -148,7 +176,8 @@ public class PvsService {
 
     }
 
-    public List<ExcelPv> importToDb(List<MultipartFile> multipartfiles) {
+    public HashMap<String,List<ExcelPv>> importToDb(List<MultipartFile> multipartfiles) {
+        HashMap<String,List<ExcelPv>> extractExams=new HashMap<>();
         List<ExcelPv> excelPvs = new ArrayList<>();
         if (!multipartfiles.isEmpty()) {
 
@@ -174,13 +203,23 @@ public class PvsService {
 
                         ExcelPv excelPv=new ExcelPv(date,filiere,sem,module,responsableModule,heure);
                         excelPvs.add(excelPv);
+
+                        if(rowIndex+1==getNumberOfNonEmptyCells(sheet, 0)){
+                            break;
+                        }
+                        if(date!=sheet.getRow(rowIndex+1).getCell(0).getStringCellValue() ||
+                                heure!=sheet.getRow(rowIndex+1).getCell(5).getStringCellValue()){
+
+                            extractExams.put(date+" "+heure,excelPvs);
+                            excelPvs.clear();
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
         }
-        return excelPvs;
+        return extractExams;
     }
     public static int getNumberOfNonEmptyCells(XSSFSheet sheet, int columnIndex) {
         int numOfNonEmptyCells = 0;
