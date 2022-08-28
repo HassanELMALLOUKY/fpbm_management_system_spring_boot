@@ -18,8 +18,8 @@ public class Semestre implements Serializable {
     @OneToMany(mappedBy = "semestre")
     private Collection<Module> modules;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne
-    private Filiere filiere;
+    @ManyToMany
+    private Collection<Filiere> filiere;
 
     public Semestre(String name, Collection<Module> modules) {
         this.name = name;

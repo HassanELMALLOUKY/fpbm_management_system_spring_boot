@@ -22,9 +22,13 @@ public class Surveillant {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private Professeur professeur;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ManyToOne
+    private Pv pv;
 
-    public Surveillant(Examen examen, Professeur professeur) {
+    public Surveillant(Examen examen, Professeur professeur, Pv pv) {
         this.examen = examen;
         this.professeur = professeur;
+        this.pv=pv;
     }
 }

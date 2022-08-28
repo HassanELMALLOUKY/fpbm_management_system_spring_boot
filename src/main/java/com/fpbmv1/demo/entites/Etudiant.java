@@ -18,13 +18,17 @@ public class Etudiant extends Personne implements Serializable {
     private String cne;
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Filiere filiere;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ManyToOne
+    private Pv pv;
 
-    public Etudiant(String nom, String prenom, Date dateNaissance, String CINE, long appogee, String cne, Filiere filiere) {
+    public Etudiant(String nom, String prenom, Date dateNaissance, String CINE, long appogee, String cne, Filiere filiere, Pv pv) {
         super(nom, prenom, dateNaissance, CINE);
         this.appogee = appogee;
         this.cne = cne;
         this.filiere = filiere;
+        this.pv=pv;
     }
 }

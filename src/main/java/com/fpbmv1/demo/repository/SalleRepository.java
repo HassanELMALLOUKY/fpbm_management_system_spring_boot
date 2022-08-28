@@ -3,13 +3,22 @@ package com.fpbmv1.demo.repository;
 import com.fpbmv1.demo.entites.Etudiant;
 import com.fpbmv1.demo.entites.Salle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-//njkdnfjsd
+@Repository
 public interface SalleRepository extends JpaRepository<Salle,Integer> {
 
-    @Query("select u from Etudiant u where u.id=269")
+    @Query("select u from Etudiant u")
     List<Etudiant> findAllEtudiantss();
+    @Query("select s from Salle s where s.disponible=true order by s.capaciteEtudiant desc ")
+    List<Salle> findFreeSalle();
+    @Transactional
+    @Modifying
+    @Query("update Salle s set s.disponible=true where s.disponible=false")
+    void makeSallesFree();
 
 }
