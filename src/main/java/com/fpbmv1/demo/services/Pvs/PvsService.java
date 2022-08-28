@@ -15,11 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Service
@@ -200,19 +198,28 @@ public class PvsService {
                         String module=row.getCell(3).getStringCellValue();
                         String responsableModule=row.getCell(4).getStringCellValue();
                         String heure=row.getCell(5).getStringCellValue();
-
                         ExcelPv excelPv=new ExcelPv(date,filiere,sem,module,responsableModule,heure);
+                        //System.out.println("excelPv: " + excelPv.toString());
                         excelPvs.add(excelPv);
+                        if(rowIndex==sheet.getLastRowNum()){
 
-                        if(rowIndex+1==getNumberOfNonEmptyCells(sheet, 0)){
+                            if(date!=sheet.getRow(rowIndex-1).getCell(0).getStringCellValue() ||
+                                    heure!=sheet.getRow(rowIndex-1).getCell(5).getStringCellValue()){
+                                extractExams.put(date+" "+heure,excelPvs);
+                            }
                             break;
                         }
+
                         if(date!=sheet.getRow(rowIndex+1).getCell(0).getStringCellValue() ||
                                 heure!=sheet.getRow(rowIndex+1).getCell(5).getStringCellValue()){
-
                             extractExams.put(date+" "+heure,excelPvs);
+                            System.out.println("key: " + date+" "+heure);
+                            excelPvs.forEach(excelPv1 -> {
+                                System.out.println(excelPv1.toString());
+                            });
                             excelPvs.clear();
                         }
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

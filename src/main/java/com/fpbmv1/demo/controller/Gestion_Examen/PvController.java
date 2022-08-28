@@ -62,7 +62,8 @@ public class PvController {
     }*/
 
     @PostMapping(path = "/examCalender")
-    public HashMap<String, List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+    @ResponseBody
+    public HashMap<String, List<ExcelPv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
         /*HashMap<String, List<Pv>> pvs = new HashMap<>();
         List<ExcelPv> excelPvList;
         System.out.println("hhhhh");
@@ -72,9 +73,10 @@ public class PvController {
         pvs=pvsService.makePv(pvsService.splitByTimeAndDate(excelPvList, time,date));
         //salleService.freeSalle();*/
         HashMap<String, List<ExcelPv>> extractExams = new HashMap<>();
-        extractExams=pvsService.importToDb(file);
+         extractExams=pvsService.importToDb(file);
+         return  extractExams;
 
-        return pvsService.makePv(extractExams);
+       // return pvsService.makePv(extractExams);
 
 
     }
