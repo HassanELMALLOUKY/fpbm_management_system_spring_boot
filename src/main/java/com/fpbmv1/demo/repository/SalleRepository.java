@@ -14,11 +14,12 @@ public interface SalleRepository extends JpaRepository<Salle,Integer> {
 
     @Query("select u from Etudiant u")
     List<Etudiant> findAllEtudiantss();
-    @Query("select s from Salle s where s.disponible=true order by s.capaciteEtudiant desc ")
+    @Query("select s from Salle s where s.disponible=true")
     List<Salle> findFreeSalle();
+    List<Salle> getAllByDisponibleIsTrue();
     @Transactional
     @Modifying
-    @Query("update Salle s set s.disponible=true where s.disponible=false")
+    @Query("update Salle s set s.disponible=true")
     void makeSallesFree();
 
 }

@@ -74,6 +74,9 @@ public class PvController {
         return surveillantService.getSurveillantNames();
     }
 
-
+    @GetMapping("/free")
+    public void getFreeSalles(){
+        salleService.freeSalle();
+    }
 
 }

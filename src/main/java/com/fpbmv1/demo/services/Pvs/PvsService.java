@@ -84,13 +84,9 @@ public class PvsService {
 
                 //Le nombre des surveillants qui pas encore affecter à une salle d'examen
                 int restSurveillants=surveillants.size();
-
+                List<Salle> salles=salleService.getEmptySalles();
                 while(restEtud>0 && restSurveillants>0 ){
-                    List<Salle> salles=salleService.getEmptySalles();
 
-
-                    //chercher la capacite des salles la plus proche du reste d'etudiants:
-                    //Rest.stream().min().get();
                     System.out.println("nb salles:"+salles.size());
                     Pv pv=new Pv();
                     pv.setLocalDateTime(LocalDateTime.now());
@@ -109,8 +105,9 @@ public class PvsService {
                     salles.get(index).setDisponible(false);
                     //mettre la salle occupée
                     salleService.updateSalle(salles.get(index),salles.get(index).getId());
+
                     //distrubier les surveillants dans les salles disponibles
-                    if(restSurveillants>=salles.get(index).getNombreSurveillant()){
+                    if(restSurveillants>salles.get(index).getNombreSurveillant()){
                         pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
                         nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
                     }
@@ -122,12 +119,9 @@ public class PvsService {
                     restSurveillants-=salles.get(index).getNombreSurveillant();
                     restEtud -=salles.get(index).getCapaciteEtudiant();
 
-                    //index++;
+                    index++;
 
                     pvs.add(pv);
-
-
-
 
                 }
                 //si les salles ne sont pas suffisantes
@@ -140,6 +134,8 @@ public class PvsService {
             });
             System.out.println("fin de date et heure : " +key);
             salleService.freeSalle();
+            salleService.freeSalle();
+            System.out.println("salles fins: "+salleService.getAllSalles());;
 
         }
 
