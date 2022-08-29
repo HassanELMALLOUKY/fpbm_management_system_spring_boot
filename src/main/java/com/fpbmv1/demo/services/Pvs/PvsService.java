@@ -90,17 +90,6 @@ public class PvsService {
 
 
                     //chercher la capacite des salles la plus proche du reste d'etudiants:
-                    int finalRestEtud = restEtud;
-                    //
-                    List<Integer> Rest = null;
-                    salles.forEach(salle -> {
-                        if(salle.getCapaciteEtudiant() == finalRestEtud){
-
-                        }
-                        else if(salle.getCapaciteEtudiant()<finalRestEtud){
-                            Rest.add(finalRestEtud-salle.getCapaciteEtudiant());
-                        }
-                    });
                     //Rest.stream().min().get();
                     System.out.println("nb salles:"+salles.size());
                     Pv pv=new Pv();
@@ -208,19 +197,17 @@ public class PvsService {
                             System.out.println("wow");
                             if(date!=sheet.getRow(rowIndex-1).getCell(0).getStringCellValue() ||
                                     heure!=sheet.getRow(rowIndex-1).getCell(5).getStringCellValue()){
+                                extractExams.put(date+" "+heure,List.copyOf(excelPvs));
                                 break;
                             }
+                            break;
 
 
                         }
 
                         if(date!=sheet.getRow(rowIndex+1).getCell(0).getStringCellValue() ||
                                 heure!=sheet.getRow(rowIndex+1).getCell(5).getStringCellValue()){
-                            List<ExcelPv> excelPvs1=new ArrayList<>();
-                            excelPvs1=excelPvs;
-                            extractExams.put(date+" "+heure,List.copyOf(excelPvs1));
-                            System.out.println("excelPvs1 size: "+excelPvs1.size());
-                            this.indexExcel=excelPvs.size();
+                            extractExams.put(date+" "+heure,List.copyOf(excelPvs));
                             excelPvs.clear();
                         }
                     }

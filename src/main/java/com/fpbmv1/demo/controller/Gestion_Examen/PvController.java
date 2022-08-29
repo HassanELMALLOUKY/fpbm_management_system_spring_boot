@@ -62,8 +62,8 @@ public class PvController {
     }*/
 
     @PostMapping(path = "/examCalender")
-    public void importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
-         pvsService.importToDb(file);
+    public HashMap<String,List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+         return pvsService.makePv(pvsService.importToDb(file));
 
        // return pvsService.makePv(extractExams);
 
