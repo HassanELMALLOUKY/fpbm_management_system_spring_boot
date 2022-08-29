@@ -4,20 +4,21 @@ import com.fpbmv1.demo.Pvs.Pv;
 import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
 import com.fpbmv1.demo.models.ExcelPv;
+import com.fpbmv1.demo.models.ExtractExcelModel;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
 import lombok.Data;
+import org.apache.commons.collections4.iterators.ListIteratorWrapper;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Service
@@ -57,7 +58,7 @@ public class PvsService {
 
     //Num de la salle
     private int index=0;
-
+    private int indexExcel=0;
     public HashMap<String,List<Pv>> makePv(HashMap<String, List<ExcelPv>> extractExams){
 
         HashMap<String,List<Pv>> PvCollection = new HashMap<>();
@@ -89,17 +90,6 @@ public class PvsService {
 
 
                     //chercher la capacite des salles la plus proche du reste d'etudiants:
-                    int finalRestEtud = restEtud;
-                    //
-                    List<Integer> Rest = null;
-                    salles.forEach(salle -> {
-                        if(salle.getCapaciteEtudiant() == finalRestEtud){
-
-                        }
-                        else if(salle.getCapaciteEtudiant()<finalRestEtud){
-                            Rest.add(finalRestEtud-salle.getCapaciteEtudiant());
-                        }
-                    });
                     //Rest.stream().min().get();
                     System.out.println("nb salles:"+salles.size());
                     Pv pv=new Pv();
@@ -175,8 +165,10 @@ public class PvsService {
     }
 
     public HashMap<String,List<ExcelPv>> importToDb(List<MultipartFile> multipartfiles) {
+        this.indexExcel=0;
         HashMap<String,List<ExcelPv>> extractExams=new HashMap<>();
         List<ExcelPv> excelPvs = new ArrayList<>();
+        final int index = 0;
         if (!multipartfiles.isEmpty()) {
 
             multipartfiles.forEach(multipartfile -> {
@@ -202,30 +194,30 @@ public class PvsService {
                         //System.out.println("excelPv: " + excelPv.toString());
                         excelPvs.add(excelPv);
                         if(rowIndex==sheet.getLastRowNum()){
-
+                            System.out.println("wow");
                             if(date!=sheet.getRow(rowIndex-1).getCell(0).getStringCellValue() ||
                                     heure!=sheet.getRow(rowIndex-1).getCell(5).getStringCellValue()){
-                                extractExams.put(date+" "+heure,excelPvs);
+                                extractExams.put(date+" "+heure,List.copyOf(excelPvs));
+                                break;
                             }
                             break;
+
+
                         }
 
                         if(date!=sheet.getRow(rowIndex+1).getCell(0).getStringCellValue() ||
                                 heure!=sheet.getRow(rowIndex+1).getCell(5).getStringCellValue()){
-                            extractExams.put(date+" "+heure,excelPvs);
-                            System.out.println("key: " + date+" "+heure);
-                            excelPvs.forEach(excelPv1 -> {
-                                System.out.println(excelPv1.toString());
-                            });
+                            extractExams.put(date+" "+heure,List.copyOf(excelPvs));
                             excelPvs.clear();
                         }
-
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
         }
+        System.out.println("finale extractExams size:"+extractExams.size());
+
         return extractExams;
     }
     public static int getNumberOfNonEmptyCells(XSSFSheet sheet, int columnIndex) {
