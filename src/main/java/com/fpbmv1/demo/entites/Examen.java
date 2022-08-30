@@ -17,10 +17,14 @@ public class Examen implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Date dateExamen;
+    private String module;
+    private String filiere;
     private String heure;
     @ManyToOne
     private Salle salle;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "examen")
     private Collection<Surveillant> surveillants;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Etudiant> etudiants;
 }

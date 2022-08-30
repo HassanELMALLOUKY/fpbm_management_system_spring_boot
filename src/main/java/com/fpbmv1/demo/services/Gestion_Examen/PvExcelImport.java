@@ -26,7 +26,7 @@ public class PvExcelImport {
         this.pvService=pvService;
     }
 
-    public void importToDb(List<MultipartFile> multipartfiles) {
+  /*  public void importToDb(List<MultipartFile> multipartfiles) {
         List<Pv> pvs=new ArrayList<>();
         if (!multipartfiles.isEmpty()) {
             multipartfiles.forEach(multipartfile -> {
@@ -63,7 +63,7 @@ public class PvExcelImport {
         }
         pvService.saveAll(pvs);
 
-    }
+    }*/
 
 
     public static int getNumberOfNonEmptyCells(XSSFSheet sheet, int columnIndex) {

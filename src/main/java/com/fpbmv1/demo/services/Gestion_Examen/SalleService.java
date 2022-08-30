@@ -1,20 +1,21 @@
 package com.fpbmv1.demo.services.Gestion_Examen;
 
-import com.fpbmv1.demo.entites.Professeur;
 import com.fpbmv1.demo.entites.Salle;
 import com.fpbmv1.demo.repository.SalleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class SalleService {
-    @Autowired
     private SalleRepository salleRepository;
+
+    public SalleService(SalleRepository salleRepository) {
+        this.salleRepository = salleRepository;
+    }
 
     public List<Salle> getEmptySalles() {
 
-        return salleRepository.findFreeSalle();
+        return salleRepository.getAllByDisponibleIsTrue();
     }
 
     public Salle getSalleById(int id) {
@@ -26,6 +27,9 @@ public class SalleService {
 
         return salleRepository.save(salle);
     }
+    public List<Salle> getAllSalles(){
+        return salleRepository.findAll();
+    }
 
     public void deleteSalle(Integer id) {
         salleRepository.deleteById(id);
@@ -35,7 +39,7 @@ public class SalleService {
         Salle s=salleRepository.findById(id).get();
         s.setName(salle.getName());
         s.setCapaciteEtudiant(salle.getCapaciteEtudiant());
-        s.setDisponible(salle.getDisponible());
+        s.setDisponible(salle.isDisponible());
         s.setNombreSurveillant(salle.getNombreSurveillant());
         salleRepository.save(salle);
 

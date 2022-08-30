@@ -13,6 +13,8 @@ import java.util.List;
 public interface SurveillantRepository extends JpaRepository<Surveillant, Integer> {
     @Query("select s,p from Surveillant s join s.professeur p where s.professeur.id=p.id ")
     List<Object[]> getSurveillantNames();
+    List<Surveillant> getSurveillantsByDisponibleIsTrue();
+    List<Surveillant> getAllByDisponibleIsTrue();
 
 
 }
