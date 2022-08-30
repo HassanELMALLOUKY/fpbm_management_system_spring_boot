@@ -19,7 +19,7 @@ public interface SalleRepository extends JpaRepository<Salle,Integer> {
     List<Salle> getAllByDisponibleIsTrue();
     @Transactional
     @Modifying
-    @Query("update Salle s set s.disponible=true")
+    @Query("update Salle s set s.disponible=true where s.disponible=false")
     void makeSallesFree();
 
 }

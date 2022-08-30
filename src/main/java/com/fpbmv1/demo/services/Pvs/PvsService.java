@@ -1,26 +1,22 @@
 package com.fpbmv1.demo.services.Pvs;
 
-import com.fpbmv1.demo.Pvs.Pv;
 import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
 import com.fpbmv1.demo.models.ExcelPv;
-import com.fpbmv1.demo.models.ExtractExcelModel;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
-import lombok.Data;
-import org.apache.commons.collections4.iterators.ListIteratorWrapper;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
-@Data
+@Transactional
 @Service
 public class PvsService {
     private Pv pv;
@@ -28,9 +24,8 @@ public class PvsService {
     private SurveillantService surveillantService;
 
     private ProfesseurService professeurService;
-
     private SalleService salleService;
-
+    private PvService pvService;
     private ExamenService examenService;
 
     private EtudiantService etudiantService;
@@ -42,13 +37,13 @@ public class PvsService {
     private ModuleService moduleService;
 
     public PvsService(SurveillantService surveillantService, ProfesseurService professeurService,
-                      SalleService salleService,
-                      ExamenService examenService, EtudiantService etudiantService,
+                      SalleService salleService, PvService pvService, ExamenService examenService, EtudiantService etudiantService,
                       FiliereService filiereService, SemestreService semestreService,
                       ModuleService moduleService) {
         this.surveillantService = surveillantService;
         this.professeurService = professeurService;
         this.salleService = salleService;
+        this.pvService = pvService;
         this.examenService = examenService;
         this.etudiantService = etudiantService;
         this.filiereService = filiereService;
@@ -58,7 +53,6 @@ public class PvsService {
 
     //Num de la salle
     private int index=0;
-    private int indexExcel=0;
     public HashMap<String,List<Pv>> makePv(HashMap<String, List<ExcelPv>> extractExams){
 
         HashMap<String,List<Pv>> PvCollection = new HashMap<>();
@@ -75,7 +69,7 @@ public class PvsService {
                 Module m=moduleService.getFiliereByName(excelPv.getModule());
 
                 List<Pv> pvs=new ArrayList<Pv>();
-                List<Surveillant> surveillants=surveillantService.getSurveillantNames();
+                List<Surveillant> surveillants=surveillantService.getSurveillantsgetDisponibleSurveillants();
                 System.out.println("surv : "+surveillants.size());
                 List<Etudiant> etudiants=etudiantService.getEtudiantsByFiliere(f.getName(),s.getName(),m.getName());
                 System.out.println("etd : "+etudiants.size());
@@ -84,44 +78,54 @@ public class PvsService {
 
                 //Le nombre des surveillants qui pas encore affecter à une salle d'examen
                 int restSurveillants=surveillants.size();
-                List<Salle> salles=salleService.getEmptySalles();
-                while(restEtud>0 && restSurveillants>0 ){
 
-                    System.out.println("nb salles:"+salles.size());
-                    Pv pv=new Pv();
-                    pv.setLocalDateTime(LocalDateTime.now());
-                    pv.setLocal(salles.get(index).getName());
-                    //pv.setModule(m.getName());
-                    //distrubier les etudiants dans les salles disponibles
-                    if(restEtud>salles.get(index).getCapaciteEtudiant()){
-                        pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
-                        nbEtudiantsCourants+=salles.get(index).getCapaciteEtudiant();
+                while(restEtud>0){
+                    List<Salle> salles=salleService.getEmptySalles();
+                    try{
+                        Pv pv=new Pv();
+                        pv.setDate(LocalDateTime.now());
+                        pv.setLocal(salles.get(index).getName());
+                        pv.setFiliere(excelPv.getFiliere());
+                        pv.setHeure(excelPv.getHeure());
+                        pv.setModule(excelPv.getModule());
+                        pv.setResponsableModule(excelPv.getResponsable());
+                        pv.setSemestre(excelPv.getSemestre());
 
-                    }else{
-                        pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,etudiants.size()));
+                        //pv.setModule(m.getName());
+                        //distrubier les etudiants dans les salles disponibles
+                        if(restEtud>salles.get(index).getCapaciteEtudiant()){
+                            pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,salles.get(index).getCapaciteEtudiant()+nbEtudiantsCourants));
+                            nbEtudiantsCourants+=salles.get(index).getCapaciteEtudiant();
 
+                        }else{
+                            pv.setEtudiants(etudiants.subList(nbEtudiantsCourants,etudiants.size()));
+
+                        }
+                        //mettre la salle occupée
+                        salles.get(index).setDisponible(false);
+                        System.out.println("salle etat: "+salles.get(index).toString());
+                        //mettre la salle occupée
+                        salleService.updateSalle(salles.get(index),salles.get(index).getId());
+
+                        //distrubier les surveillants dans les salles disponibles
+                        /*if(restSurveillants>salles.get(index).getNombreSurveillant()){
+                            pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
+                            nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
+                        }
+                        else{
+                            pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,surveillants.size()));
+
+                        }*/
+
+                        //restSurveillants-=salles.get(index).getNombreSurveillant();
+                        restEtud -=salles.get(index).getCapaciteEtudiant();
+
+                        //index++;
+
+                        pvs.add(pv);
+                    } catch (Exception e) {
+                        System.out.println("On a pas assez de salles!!!");
                     }
-                    //metrre la salle occupée
-                    salles.get(index).setDisponible(false);
-                    //mettre la salle occupée
-                    salleService.updateSalle(salles.get(index),salles.get(index).getId());
-
-                    //distrubier les surveillants dans les salles disponibles
-                    if(restSurveillants>salles.get(index).getNombreSurveillant()){
-                        pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
-                        nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
-                    }
-                    else{
-                        pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,surveillants.size()));
-
-                    }
-
-                    restSurveillants-=salles.get(index).getNombreSurveillant();
-                    restEtud -=salles.get(index).getCapaciteEtudiant();
-
-                    index++;
-
-                    pvs.add(pv);
 
                 }
                 //si les salles ne sont pas suffisantes
@@ -133,8 +137,12 @@ public class PvsService {
 
             });
             System.out.println("fin de date et heure : " +key);
-            salleService.freeSalle();
-            salleService.freeSalle();
+            //salleService.freeSalle();
+            salleService.getAllSalles().forEach(salle->{
+                salle.setDisponible(true);
+                salleService.updateSalle(salle,salle.getId());
+
+            });
             System.out.println("salles fins: "+salleService.getAllSalles());;
 
         }
@@ -161,7 +169,6 @@ public class PvsService {
     }
 
     public HashMap<String,List<ExcelPv>> importToDb(List<MultipartFile> multipartfiles) {
-        this.indexExcel=0;
         HashMap<String,List<ExcelPv>> extractExams=new HashMap<>();
         List<ExcelPv> excelPvs = new ArrayList<>();
         final int index = 0;

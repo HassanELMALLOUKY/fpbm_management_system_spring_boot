@@ -54,4 +54,7 @@ public class SurveillantService {
         }
             return surveillants;
     }
+    public List<Surveillant> getSurveillantsgetDisponibleSurveillants() {
+        return surveillantRepository.getAllByDisponibleIsTrue();
+    }
 }

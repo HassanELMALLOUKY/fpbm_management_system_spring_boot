@@ -14,6 +14,7 @@ public class Surveillant {
     private int id;
     private String nom;
     private String prenom;
+    private boolean disponible;
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)

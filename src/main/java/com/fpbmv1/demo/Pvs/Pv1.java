@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-public class Pv {
+public class Pv1 {
     private String local;
     private String module;
     private LocalDateTime localDateTime;
