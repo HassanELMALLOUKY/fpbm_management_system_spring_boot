@@ -1,6 +1,7 @@
 package com.fpbmv1.demo.controller.Gestion_Examen;
 
 import com.fpbmv1.demo.Pvs.Pv1;
+import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
@@ -59,11 +60,7 @@ public class PvController {
      return   pvService.getAllPvs();
 
     }
-    /*@GetMapping("/test/filiere={f}&semestre={semestre}&module={module}")
-    public List<Pv> test(@PathVariable  String semestre, @PathVariable String module,@PathVariable(value = "f") String filiere){
-        return pvsService.makePv(filiere,semestre,module) ;
 
-    }*/
 
     @PostMapping(path = "/examCalender")
     public HashMap<String,List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
@@ -86,5 +83,11 @@ public class PvController {
 
         return salleService.getEmptySalles();
     }
+    @PostMapping("/pv/{cine}")
+    public List<PvEtudiant> getPvsWithCINE(@PathVariable String cine){
+
+        return pvService.getPvsWithCINE(cine);
+    }
+
 
 }

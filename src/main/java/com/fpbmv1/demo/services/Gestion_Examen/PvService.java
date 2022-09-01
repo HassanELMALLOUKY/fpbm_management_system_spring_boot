@@ -1,5 +1,6 @@
 package com.fpbmv1.demo.services.Gestion_Examen;
 
+import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.Pv;
 import com.fpbmv1.demo.models.ExcelPv;
 import com.fpbmv1.demo.repository.PvRepository;
@@ -52,6 +53,19 @@ public class PvService {
 
     public void saveAll(List<Pv> pvs) {
         pvRepository.saveAll(pvs);
+    }
+
+    public List<PvEtudiant> getPvsWithCINE(String cine) {
+        List<PvEtudiant> pvEtudiants = new ArrayList<>();
+        List<Pv> pvs = new ArrayList<>();
+        pvs=pvRepository.getPvsWithCINE(cine);
+        pvs.forEach(pv -> {
+            PvEtudiant  pvEtudiant = new PvEtudiant(pv.getDate().toString(),pv.getFiliere(),pv.getSemestre(),pv.getModule(),pv.getHeure(),pv.getResponsableModule(),
+                    pv.getLocal()
+            );
+            pvEtudiants.add(pvEtudiant);
+        });
+        return pvEtudiants;
     }
 
 }

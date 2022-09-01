@@ -18,7 +18,7 @@ public class Pv {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private LocalDateTime date;
+    private String date;
     private String filiere;
     private String semestre;
     private String module;
@@ -33,7 +33,7 @@ public class Pv {
     @OneToMany()
     private List<Surveillant> surveillants;
 
-    public Pv(LocalDateTime date, String filiere, String semestre, String module, String heure, String responsableModule, String local) {
+    public Pv(String date, String filiere, String semestre, String module, String heure, String responsableModule, String local) {
         this.date = date;
         this.filiere = filiere;
         this.semestre = semestre;
