@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class PvController {
     List<Pv1> pvs=new ArrayList<>();
     
@@ -52,6 +53,11 @@ public class PvController {
         //pvs.add(pvsService.makePv(salleService.getSalleById(1),m));
         //pvs.add(pvsService.makePv(salleService.getSalleById(2),m));
         return pvs;
+    }
+    @GetMapping("/pvs")
+    public List<Pv> geAllpvs(){
+     return   pvService.getAllPvs();
+
     }
     /*@GetMapping("/test/filiere={f}&semestre={semestre}&module={module}")
     public List<Pv> test(@PathVariable  String semestre, @PathVariable String module,@PathVariable(value = "f") String filiere){
