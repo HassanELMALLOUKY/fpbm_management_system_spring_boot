@@ -11,5 +11,6 @@ import java.util.List;
 
 @Repository
 public interface PvRepository extends JpaRepository<Pv, Integer> {
-
+    @Query("select p from Pv p join p.etudiants e where e.CINE=?1")
+    List<Pv> getPvsWithCINE(String cine);
 }

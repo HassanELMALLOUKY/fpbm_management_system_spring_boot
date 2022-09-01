@@ -83,7 +83,7 @@ public class PvsService {
                     List<Salle> salles=salleService.getEmptySalles();
                     try{
                         Pv pv=new Pv();
-                        pv.setDate(LocalDateTime.now());
+                        pv.setDate(key.split(" ",0).toString());
                         pv.setLocal(salles.get(index).getName());
                         pv.setFiliere(excelPv.getFiliere());
                         pv.setHeure(excelPv.getHeure());
