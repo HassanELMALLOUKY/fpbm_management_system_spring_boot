@@ -77,13 +77,17 @@ public class PvController {
     public List<Surveillant> survei(){
         return surveillantService.getSurveillantNames();
     }
+    @GetMapping("/module/{nom}")
+    public Module getmodule(@PathVariable String nom){
+        return moduleService.getFiliereByName(nom);
+    }
 
     @GetMapping("/free")
     public List<Salle> getFreeSalles(){
 
         return salleService.getEmptySalles();
     }
-    @PostMapping("/pv/{cine}")
+    @GetMapping("/pv/{cine}")
     public List<PvEtudiant> getPvsWithCINE(@PathVariable String cine){
 
         return pvService.getPvsWithCINE(cine);

@@ -65,8 +65,10 @@ public class PvsService {
                 int nbEtudiantsCourants=0;
                 int nbSurveillantsCourants=0;
                 Filiere f=filiereService.getFiliereByName(excelPv.getFiliere());
+                System.out.println("Filiere" +f.getName());
                 Semestre s=semestreService.getFiliereByName(excelPv.getSemestre());
                 Module m=moduleService.getFiliereByName(excelPv.getModule());
+                System.out.println("Module" +m.getName());
 
                 List<Pv> pvs=new ArrayList<Pv>();
                 List<Surveillant> surveillants=surveillantService.getSurveillantsgetDisponibleSurveillants();
@@ -83,7 +85,10 @@ public class PvsService {
                     List<Salle> salles=salleService.getEmptySalles();
                     try{
                         Pv pv=new Pv();
-                        pv.setDate(key.split(" ",0).toString());
+                        System.out.println("dddddd"+key);
+                        String[] parts=key.split(" ");
+
+                        pv.setDate(parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]);
                         pv.setLocal(salles.get(index).getName());
                         pv.setFiliere(excelPv.getFiliere());
                         pv.setHeure(excelPv.getHeure());
@@ -123,6 +128,7 @@ public class PvsService {
                         //index++;
 
                         pvs.add(pv);
+
                     } catch (Exception e) {
                         System.out.println("On a pas assez de salles!!!");
                     }
@@ -196,6 +202,7 @@ public class PvsService {
                         ExcelPv excelPv=new ExcelPv(date,filiere,sem,module,responsableModule,heure);
                         //System.out.println("excelPv: " + excelPv.toString());
                         excelPvs.add(excelPv);
+
                         if(rowIndex==sheet.getLastRowNum()){
                             System.out.println("wow");
                             if(date!=sheet.getRow(rowIndex-1).getCell(0).getStringCellValue() ||
@@ -207,11 +214,21 @@ public class PvsService {
 
 
                         }
+                        System.out.println("date: " + date + "heure: " + heure + "exceldate: " + sheet.getRow(rowIndex+1).getCell(0).getStringCellValue()+"excelheure: " +sheet.getRow(rowIndex+1).getCell(5).getStringCellValue() );
+                        if(date.equals(sheet.getRow(rowIndex+1).getCell(0).getStringCellValue()) ||
+                                heure.equals(sheet.getRow(rowIndex+1).getCell(5).getStringCellValue())){
 
-                        if(date!=sheet.getRow(rowIndex+1).getCell(0).getStringCellValue() ||
-                                heure!=sheet.getRow(rowIndex+1).getCell(5).getStringCellValue()){
+                            System.out.println("yesss");
+                        }else{
+                            System.out.println("no");
+                        }
+                        if(!date.equals(sheet.getRow(rowIndex+1).getCell(0).getStringCellValue()) ||
+                                !heure.equals(sheet.getRow(rowIndex+1).getCell(5).getStringCellValue())){
+
                             extractExams.put(date+" "+heure,List.copyOf(excelPvs));
+                               System.out.println("dddd "+excelPvs);
                             excelPvs.clear();
+
                         }
                     }
                 } catch (IOException e) {

@@ -65,7 +65,7 @@ public class EtudiantController {
     }
     @GetMapping("test")
     public List<Etudiant> getEtudiantsByFiliere(){
-        return etudiantService.getEtudiantsByFiliere("ISI","S1","Spring");
+        return etudiantService.getEtudiantsByFiliere("SEG","S6","M33 :Audit General");
     }
 
 }

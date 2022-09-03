@@ -36,7 +36,8 @@ public class PvService {
             List<Pv> pvs = new ArrayList<Pv>();
             pvs=hashMapPv.getValue();
             pvs.forEach(pv -> {
-                System.out.println("surveillants: "+pv.getSurveillants());
+                System.out.println("pv"+ pv);
+                //System.out.println("surveillants: "+pv.getSurveillants());
                 pvRepository.save(pv);
             });
 
