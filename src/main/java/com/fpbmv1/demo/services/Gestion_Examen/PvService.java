@@ -2,11 +2,9 @@ package com.fpbmv1.demo.services.Gestion_Examen;
 
 import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.Pv;
-import com.fpbmv1.demo.models.ExcelPv;
 import com.fpbmv1.demo.repository.PvRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,15 +12,19 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@CrossOrigin("*")
 public class PvService {
-    @Autowired
     private PvRepository pvRepository;
+
+    public PvService(PvRepository pvRepository) {
+        this.pvRepository = pvRepository;
+    }
 
     public List<Pv> getAllPvs() {
         return pvRepository.findAll();
     }
 
-    public Pv getEtudiantById(int id) {
+    public Pv getEtudiantById(long id) {
 
         return pvRepository.findById(id).get();
     }
@@ -44,7 +46,7 @@ public class PvService {
         }
     }
 
-    public void deleteEtudiant(Integer id) {
+    public void deleteEtudiant(long id) {
         pvRepository.deleteById(id);
 
     }
@@ -68,5 +70,9 @@ public class PvService {
         });
         return pvEtudiants;
     }
+    public Pv getPvById(long id){
+        return  pvRepository.findById(id).get();
+    }
+
 
 }

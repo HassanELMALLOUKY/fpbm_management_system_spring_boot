@@ -93,5 +93,10 @@ public class PvController {
         return pvService.getPvsWithCINE(cine);
     }
 
+    @PostMapping("/pvById/{id}")
+    public Pv getPvById(@PathVariable long id){
+        return pvService.getPvById(id);
+    }
+
 
 }

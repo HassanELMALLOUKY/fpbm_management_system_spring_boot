@@ -61,14 +61,13 @@ public class PvsService {
             List<ExcelPv> value = extractExam.getValue();
             System.out.println("début de date et heure : " +key);
             value.forEach(excelPv -> {
+                int ordre=1;
                 System.out.println("filiere: "+excelPv.getFiliere());
                 int nbEtudiantsCourants=0;
                 int nbSurveillantsCourants=0;
                 Filiere f=filiereService.getFiliereByName(excelPv.getFiliere());
-                System.out.println("Filiere" +f.getName());
                 Semestre s=semestreService.getFiliereByName(excelPv.getSemestre());
                 Module m=moduleService.getFiliereByName(excelPv.getModule());
-                System.out.println("Module" +m.getName());
 
                 List<Pv> pvs=new ArrayList<Pv>();
                 List<Surveillant> surveillants=surveillantService.getSurveillantsgetDisponibleSurveillants();
@@ -87,7 +86,6 @@ public class PvsService {
                         Pv pv=new Pv();
                         System.out.println("dddddd"+key);
                         String[] parts=key.split(" ");
-
                         pv.setDate(parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]);
                         pv.setLocal(salles.get(index).getName());
                         pv.setFiliere(excelPv.getFiliere());
@@ -125,10 +123,15 @@ public class PvsService {
                         //restSurveillants-=salles.get(index).getNombreSurveillant();
                         restEtud -=salles.get(index).getCapaciteEtudiant();
 
-                        //index++;
-
+                        //index++
+                        //pv.setFrom=index+1; pv.setTo=pv.get  index=pv.getEtudiants.size
+                        pv.setDe(ordre);
+                        System.out.println("ordre avant: "+ordre);
+                        pv.setJusqua(ordre+salles.get(index).getCapaciteEtudiant());
+                        ordre+=salles.get(index).getCapaciteEtudiant();
+                        System.out.println("capaciteEtudiant: "+salles.get(index).getCapaciteEtudiant());
+                        System.out.println("ordre apres: "+ordre);
                         pvs.add(pv);
-
                     } catch (Exception e) {
                         System.out.println("On a pas assez de salles!!!");
                     }
@@ -202,7 +205,6 @@ public class PvsService {
                         ExcelPv excelPv=new ExcelPv(date,filiere,sem,module,responsableModule,heure);
                         //System.out.println("excelPv: " + excelPv.toString());
                         excelPvs.add(excelPv);
-
                         if(rowIndex==sheet.getLastRowNum()){
                             System.out.println("wow");
                             if(date!=sheet.getRow(rowIndex-1).getCell(0).getStringCellValue() ||

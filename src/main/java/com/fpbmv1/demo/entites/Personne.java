@@ -15,6 +15,7 @@ public abstract class Personne {
     private int id;
     private String nom;
     private String prenom;
+    @Temporal(TemporalType.DATE)
     private Date dateNaissance;
     private String CINE;
 
