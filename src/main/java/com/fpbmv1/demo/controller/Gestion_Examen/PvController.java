@@ -6,6 +6,7 @@ import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
 import com.fpbmv1.demo.services.Pvs.PvsService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +32,12 @@ public class PvController {
     private ModuleService moduleService;
     
     private SurveillantService surveillantService;
+
     private PvService pvService;
 
-    public PvController(PvsService pvsService, SalleService salleService, LocalService localService, FiliereService filiereService, SemestreService semestreService, ModuleService moduleService, SurveillantService surveillantService, PvService pvService, PvService pvService1) {
+    private OrdreService ordreService;
+
+    public PvController(PvsService pvsService, SalleService salleService, LocalService localService, FiliereService filiereService, SemestreService semestreService, ModuleService moduleService, SurveillantService surveillantService, PvService pvService, PvService pvService1, OrdreService ordreService) {
         this.pvsService = pvsService;
         this.salleService = salleService;
         this.localService = localService;
@@ -42,6 +46,7 @@ public class PvController {
         this.moduleService = moduleService;
         this.surveillantService = surveillantService;
         this.pvService = pvService1;
+        this.ordreService= ordreService;
     }
 
     @GetMapping("/findEmptySalle")
@@ -63,11 +68,10 @@ public class PvController {
 
 
     @PostMapping(path = "/examCalender")
-    public HashMap<String,List<Pv>> importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
+    public void importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
         HashMap<String,List<Pv>> PvCollection = new HashMap<>();
          PvCollection= pvsService.makePv(pvsService.importToDb(file));
-         pvService.savePvs(PvCollection);
-         return  PvCollection;
+         //pvService.savePvs(PvCollection);
 
        // return pvsService.makePv(extractExams);
 
@@ -98,5 +102,13 @@ public class PvController {
         return pvService.getPvById(id);
     }
 
+    @GetMapping("/ordre/{etudiant}/{pv}")
+    public String getOrdreByEtudiantAndPv(@PathVariable Etudiant etudiant, @PathVariable Pv pv){
+        return ordreService.getOrdreByEtudiantAndPv(etudiant, pv).getOrdre();
+    }
+    @GetMapping("/ordre/{etudiant}")
+    public List<Ordre> getOrdreByEtudiant(@PathVariable Etudiant etudiant){
+        return ordreService.getOrdreList(etudiant);
+    }
 
 }

@@ -11,6 +11,7 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Professeur extends Personne implements Serializable {
     private String grade;
     @ToString.Exclude @EqualsAndHashCode.Exclude
@@ -19,12 +20,4 @@ public class Professeur extends Personne implements Serializable {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne()
     private Extern extern;
-
-
-    public Professeur(String nom, String prenom, Date dateNaissance, String CINE, String grade, Collection<Surveillant> surveillants, Extern extern) {
-        super(nom, prenom, dateNaissance, CINE);
-        this.grade = grade;
-        this.surveillants = surveillants;
-        this.extern = extern;
-    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Transactional
 @Service
@@ -22,6 +23,7 @@ public class PvsService {
     private Pv pv;
 
     private SurveillantService surveillantService;
+    protected OrdreService ordreService;
 
     private ProfesseurService professeurService;
     private SalleService salleService;
@@ -39,7 +41,7 @@ public class PvsService {
     public PvsService(SurveillantService surveillantService, ProfesseurService professeurService,
                       SalleService salleService, PvService pvService, ExamenService examenService, EtudiantService etudiantService,
                       FiliereService filiereService, SemestreService semestreService,
-                      ModuleService moduleService) {
+                      ModuleService moduleService,OrdreService ordreService) {
         this.surveillantService = surveillantService;
         this.professeurService = professeurService;
         this.salleService = salleService;
@@ -49,6 +51,7 @@ public class PvsService {
         this.filiereService = filiereService;
         this.semestreService = semestreService;
         this.moduleService = moduleService;
+        this.ordreService = ordreService;
     }
 
     //Num de la salle
@@ -79,7 +82,8 @@ public class PvsService {
 
                 //Le nombre des surveillants qui pas encore affecter à une salle d'examen
                 int restSurveillants=surveillants.size();
-
+                //ordre etudiant dans la salle
+                AtomicLong order = new AtomicLong(1);
                 while(restEtud>0){
                     List<Salle> salles=salleService.getEmptySalles();
                     try{
@@ -111,27 +115,33 @@ public class PvsService {
                         salleService.updateSalle(salles.get(index),salles.get(index).getId());
 
                         //distrubier les surveillants dans les salles disponibles
-                        /*if(restSurveillants>salles.get(index).getNombreSurveillant()){
+                        if(restSurveillants>salles.get(index).getNombreSurveillant()){
                             pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants));
+                            surveillants.subList(nbSurveillantsCourants,salles.get(index).getNombreSurveillant()+nbSurveillantsCourants).forEach(surveillant->{
+                                surveillant.setDisponible(false);
+                                surveillantService.updateSurveillants(surveillant,surveillant.getId());
+                            });
                             nbSurveillantsCourants+=salles.get(index).getNombreSurveillant();
                         }
                         else{
                             pv.setSurveillants(surveillants.subList(nbSurveillantsCourants,surveillants.size()));
 
-                        }*/
+                        }
 
                         //restSurveillants-=salles.get(index).getNombreSurveillant();
                         restEtud -=salles.get(index).getCapaciteEtudiant();
-
-                        //index++
-                        //pv.setFrom=index+1; pv.setTo=pv.get  index=pv.getEtudiants.size
-                        pv.setDe(ordre);
-                        System.out.println("ordre avant: "+ordre);
-                        pv.setJusqua(ordre+salles.get(index).getCapaciteEtudiant());
-                        ordre+=salles.get(index).getCapaciteEtudiant();
-                        System.out.println("capaciteEtudiant: "+salles.get(index).getCapaciteEtudiant());
-                        System.out.println("ordre apres: "+ordre);
+                        pvService.savePv(pv);
                         pvs.add(pv);
+                        pv.getEtudiants().forEach(e -> {
+                            Ordre ordre1=new Ordre();
+                            ordre1.setPv(pv);
+                            ordre1.setEtudiant(e);
+                            ordre1.setOrdre(String.valueOf(order.get()));
+                            ordreService.saveOrdre(ordre1);
+                            order.getAndIncrement();
+
+
+                        });
                     } catch (Exception e) {
                         System.out.println("On a pas assez de salles!!!");
                     }
@@ -151,6 +161,10 @@ public class PvsService {
                 salle.setDisponible(true);
                 salleService.updateSalle(salle,salle.getId());
 
+            });
+            surveillantService.getAllSurveillants().forEach(surveillant -> {
+                surveillant.setDisponible(true);
+                surveillantService.updateSurveillants(surveillant,surveillant.getId());
             });
             System.out.println("salles fins: "+salleService.getAllSalles());;
 
