@@ -6,13 +6,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
 @Data
 @NoArgsConstructor
-public abstract class Personne {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public abstract class Personne extends User {
     private String nom;
     private String prenom;
     @Temporal(TemporalType.DATE)

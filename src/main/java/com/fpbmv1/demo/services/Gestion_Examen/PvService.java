@@ -4,6 +4,7 @@ import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.Pv;
 import com.fpbmv1.demo.repository.PvRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Service
 @CrossOrigin("*")
+@Transactional
 public class PvService {
     private PvRepository pvRepository;
 
