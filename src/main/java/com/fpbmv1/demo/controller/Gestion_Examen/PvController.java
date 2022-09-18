@@ -93,7 +93,6 @@ public class PvController {
     }
     @GetMapping("/pv/{cine}")
     public List<PvEtudiant> getPvsWithCINE(@PathVariable String cine){
-
         return pvService.getPvsWithCINE(cine);
     }
 
@@ -103,8 +102,8 @@ public class PvController {
     }
 
     @GetMapping("/ordre/{etudiant}/{pv}")
-    public String getOrdreByEtudiantAndPv(@PathVariable Etudiant etudiant, @PathVariable Pv pv){
-        return ordreService.getOrdreByEtudiantAndPv(etudiant, pv).getOrdre();
+    public String getOrdreByEtudiantAndPv(@PathVariable String etudiant, @PathVariable String pv){
+        return ordreService.getOrdreByEtudiantAndPv(Integer.parseInt(etudiant), Integer.parseInt(pv)).getOrdre();
     }
     @GetMapping("/ordre/{etudiant}")
     public List<Ordre> getOrdreByEtudiant(@PathVariable Etudiant etudiant){

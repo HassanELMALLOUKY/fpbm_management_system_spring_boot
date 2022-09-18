@@ -29,7 +29,7 @@ public class LocalService {
     }
 
 
-    public Etudiant getEtudiantById(int id) {
+    public Etudiant getEtudiantById(long id) {
 
         return etudiantRepository.findById(id).get();
     }

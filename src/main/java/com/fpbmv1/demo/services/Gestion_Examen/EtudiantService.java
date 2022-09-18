@@ -27,7 +27,7 @@ public class EtudiantService{
         return etudiantRepository.findAll();
     }
 
-    public Etudiant getEtudiantById(int id) {
+    public Etudiant getEtudiantById(long id) {
 
         return etudiantRepository.findById(id).get();
     }
@@ -37,7 +37,7 @@ public class EtudiantService{
         return etudiantRepository.save(etudiant);
     }
 
-    public Etudiant deleteEtudiant(Integer id) {
+    public Etudiant deleteEtudiant(long id) {
         etudiantRepository.deleteById(id);
     return null;
     }
