@@ -13,4 +13,6 @@ import java.util.List;
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
    @Query("select e from Etudiant e join e.filiere f join f.semestres s join s.modules m where f.name=?1 and s.name=?2 and m.name=?3 ")
     List<Etudiant> getEtudiantsByFiliere(String f,String s, String m);
+
+   Etudiant getEtudiantsByCINE(String cine);
 }

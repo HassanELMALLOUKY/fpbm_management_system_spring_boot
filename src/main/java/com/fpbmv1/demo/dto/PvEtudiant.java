@@ -19,8 +19,9 @@ public class PvEtudiant implements Serializable {
     private String heure;
     private String responsableModule;
     private String Local;
+    private String ordre;
 
-    public PvEtudiant( String date, String filiere, String semestre, String module, String heure, String responsableModule, String local) {
+    public PvEtudiant( String date, String filiere, String semestre, String module, String heure, String responsableModule, String local, String ordre) {
         this.date = date;
         this.filiere = filiere;
         this.semestre = semestre;
@@ -28,5 +29,6 @@ public class PvEtudiant implements Serializable {
         this.heure = heure;
         this.responsableModule = responsableModule;
         Local = local;
+        this.ordre = ordre;
     }
 }

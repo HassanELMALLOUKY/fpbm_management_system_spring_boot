@@ -31,6 +31,10 @@ public class EtudiantService{
 
         return etudiantRepository.findById(id).get();
     }
+    public Etudiant getEtudiantByCINE(String cine) {
+
+        return etudiantRepository.getEtudiantsByCINE(cine);
+    }
 
     public Etudiant saveEtudiant(Etudiant etudiant) {
 

@@ -23,8 +23,9 @@ public class Pv {
     private String Local;
     private long de;
     private long jusqua;
+    private String ordre;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Etudiant> etudiants;
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude

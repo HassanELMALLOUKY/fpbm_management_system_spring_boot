@@ -27,15 +27,23 @@ class OrdreService {
     public void saveOrdre(Ordre ordre){
         ordreRepository.save(ordre);
     }
-    public Ordre getOrdreByEtudiantAndPv(long etudiant, long idPv){
+    public Pv getOrdreByEtudiantAndPv(long etudiant, long idPv){
         Etudiant e=etudiantService.getEtudiantById(etudiant);
         Pv pv=pvService.getPvById(idPv);
+        pv.setOrdre(ordreRepository.findOrdreByEtudiantAndPv(e, pv).getOrdre());
 
-        return ordreRepository.findOrdreByEtudiantAndPv(e, pv);
+        return pv;
     }
 
     public List<Ordre> getOrdreList(Etudiant etudiant){
         return  ordreRepository.findOrdresByEtudiant(etudiant);
+    }
+
+    public List<Etudiant> getOrdreList1(String id){
+        pvService.getPvById(Long.parseLong(id)).getEtudiants().forEach(e ->  {
+            e.setOrdre(getOrdreByEtudiantAndPv(e.getId(),Long.parseLong(id)).getOrdre());
+        });
+        return pvService.getPvById(Long.parseLong(id)).getEtudiants();
     }
 }
 

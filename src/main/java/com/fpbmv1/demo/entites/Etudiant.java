@@ -17,6 +17,7 @@ import java.util.Date;
 public class Etudiant extends Personne implements Serializable {
     private long appogee;
     private String cne;
+    private String ordre;
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
