@@ -67,6 +67,7 @@ public class PvsService {
                 int ordre=1;
                 System.out.println("filiere: "+excelPv.getFiliere());
                 int nbEtudiantsCourants=0;
+                //nombre de surveillances
                 int nbSurveillantsCourants=0;
                 Filiere f=filiereService.getFiliereByName(excelPv.getFiliere());
                 Semestre s=semestreService.getFiliereByName(excelPv.getSemestre());

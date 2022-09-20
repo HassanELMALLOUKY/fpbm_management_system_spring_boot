@@ -4,8 +4,10 @@ import com.fpbmv1.demo.Pvs.Pv1;
 import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
+import com.fpbmv1.demo.models.Ord;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
 import com.fpbmv1.demo.services.Pvs.PvsService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +39,7 @@ public class PvController {
 
     private OrdreService ordreService;
 
-    public PvController(PvsService pvsService, SalleService salleService, LocalService localService, FiliereService filiereService, SemestreService semestreService, ModuleService moduleService, SurveillantService surveillantService, PvService pvService, PvService pvService1, OrdreService ordreService) {
+    public PvController(@Lazy PvsService pvsService, SalleService salleService, LocalService localService, FiliereService filiereService, SemestreService semestreService, ModuleService moduleService, SurveillantService surveillantService, PvService pvService, PvService pvService1, OrdreService ordreService) {
         this.pvsService = pvsService;
         this.salleService = salleService;
         this.localService = localService;
@@ -71,11 +73,6 @@ public class PvController {
     public void importTransactionsFromExcelToDb(@RequestParam("file") List<MultipartFile> file) {
         HashMap<String,List<Pv>> PvCollection = new HashMap<>();
          PvCollection= pvsService.makePv(pvsService.importToDb(file));
-         //pvService.savePvs(PvCollection);
-
-       // return pvsService.makePv(extractExams);
-
-
     }
     @GetMapping("/surveillants")
     public List<Surveillant> survei(){
@@ -93,7 +90,6 @@ public class PvController {
     }
     @GetMapping("/pv/{cine}")
     public List<PvEtudiant> getPvsWithCINE(@PathVariable String cine){
-
         return pvService.getPvsWithCINE(cine);
     }
 
@@ -103,12 +99,16 @@ public class PvController {
     }
 
     @GetMapping("/ordre/{etudiant}/{pv}")
-    public String getOrdreByEtudiantAndPv(@PathVariable Etudiant etudiant, @PathVariable Pv pv){
-        return ordreService.getOrdreByEtudiantAndPv(etudiant, pv).getOrdre();
+    public Pv getOrdreByEtudiantAndPv(@PathVariable String etudiant, @PathVariable String pv){
+        return ordreService.getOrdreByEtudiantAndPv(Integer.parseInt(etudiant), Integer.parseInt(pv));
     }
     @GetMapping("/ordre/{etudiant}")
     public List<Ordre> getOrdreByEtudiant(@PathVariable Etudiant etudiant){
         return ordreService.getOrdreList(etudiant);
+    }
+    @GetMapping("/ordre1/{id}")
+    public List<Etudiant> getOrdreByEtudiant(@PathVariable String id){
+        return ordreService.getOrdreList1(id);
     }
 
 }

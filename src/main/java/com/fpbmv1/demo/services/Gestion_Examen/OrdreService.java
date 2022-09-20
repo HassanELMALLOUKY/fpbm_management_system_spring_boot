@@ -14,6 +14,10 @@ public
 class OrdreService {
     @Autowired
     private OrdreRepository ordreRepository;
+    @Autowired
+    private EtudiantService etudiantService;
+    @Autowired
+    private PvService pvService;
     public Ordre getFiliere(long id) {
         return ordreRepository.findById(id).orElse(null);
     }
@@ -23,12 +27,23 @@ class OrdreService {
     public void saveOrdre(Ordre ordre){
         ordreRepository.save(ordre);
     }
-    public Ordre getOrdreByEtudiantAndPv(Etudiant etudiant, Pv pv){
-        return ordreRepository.findOrdreByEtudiantAndPv(etudiant, pv);
+    public Pv getOrdreByEtudiantAndPv(long etudiant, long idPv){
+        Etudiant e=etudiantService.getEtudiantById(etudiant);
+        Pv pv=pvService.getPvById(idPv);
+        pv.setOrdre(ordreRepository.findOrdreByEtudiantAndPv(e, pv).getOrdre());
+
+        return pv;
     }
 
     public List<Ordre> getOrdreList(Etudiant etudiant){
         return  ordreRepository.findOrdresByEtudiant(etudiant);
+    }
+
+    public List<Etudiant> getOrdreList1(String id){
+        pvService.getPvById(Long.parseLong(id)).getEtudiants().forEach(e ->  {
+            e.setOrdre(getOrdreByEtudiantAndPv(e.getId(),Long.parseLong(id)).getOrdre());
+        });
+        return pvService.getPvById(Long.parseLong(id)).getEtudiants();
     }
 }
 
