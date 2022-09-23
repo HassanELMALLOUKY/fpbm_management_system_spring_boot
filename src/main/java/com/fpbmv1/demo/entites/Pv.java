@@ -27,7 +27,7 @@ public class Pv {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Etudiant> etudiants;
-    @JsonIgnore
+
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany()
     private List<Surveillant> surveillants;

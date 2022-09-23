@@ -33,6 +33,10 @@ public class EtudiantController {
 
         return etudiantService.getAllStudents();
     }
+    @GetMapping("/get/{cine}")
+    public Etudiant getEtudiantByCINE(@PathVariable String cine) {
+        return etudiantService.getEtudiantByCINE(cine);
+    }
 
     @PostMapping("/saveEtudiant")
     public Etudiant saveEtudiant(@RequestBody Etudiant etudiant) {
@@ -67,5 +71,6 @@ public class EtudiantController {
     public List<Etudiant> getEtudiantsByFiliere(){
         return etudiantService.getEtudiantsByFiliere("SEG","S6","M33 :Audit General");
     }
+
 
 }
