@@ -23,7 +23,7 @@ public class Examen implements Serializable {
     @ManyToOne
     private Salle salle;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "examen")
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Surveillant> surveillants;
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Etudiant> etudiants;
