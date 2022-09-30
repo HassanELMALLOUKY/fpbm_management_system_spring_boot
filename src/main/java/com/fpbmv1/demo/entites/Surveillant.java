@@ -18,14 +18,7 @@ public class Surveillant {
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    private Examen examen;
-    @JsonIgnore
-    @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
     private Professeur professeur;
-
     public Surveillant(Examen examen, Professeur professeur) {
         this.examen = examen;
-        this.professeur = professeur;
-    }
 }

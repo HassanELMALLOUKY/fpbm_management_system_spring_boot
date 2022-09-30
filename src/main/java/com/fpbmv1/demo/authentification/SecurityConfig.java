@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/**").hasAnyAuthority("teacher","Admin","student");
         http.authorizeRequests().antMatchers(POST, "/**").hasAnyAuthority("Admin");
-        http.authorizeRequests().antMatchers(DELETE, "/**").hasAnyAuthority("Admin");
+        http.authorizeRequests().antMatchers(DELETE, "/etudiant/deleteEtudiant/**").hasAnyAuthority("Admin");
         http.authorizeRequests().antMatchers(GET, "/user/**").hasAnyAuthority("teacher");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
