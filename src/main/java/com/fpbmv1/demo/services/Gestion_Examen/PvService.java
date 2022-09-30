@@ -3,6 +3,7 @@ package com.fpbmv1.demo.services.Gestion_Examen;
 import com.fpbmv1.demo.dto.PvEtudiant;
 import com.fpbmv1.demo.entites.Etudiant;
 import com.fpbmv1.demo.entites.Pv;
+import com.fpbmv1.demo.entites.Surveillant;
 import com.fpbmv1.demo.repository.PvRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,9 @@ public class PvService {
     }
     public Pv getPvById(long id){
         return  pvRepository.findById(id).get();
+    }
+    public List<Surveillant> getSurveillants(long id){
+        return pvRepository.getSurveillants(id);
     }
 
 

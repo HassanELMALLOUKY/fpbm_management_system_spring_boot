@@ -29,7 +29,7 @@ public class Pv {
     private List<Etudiant> etudiants;
     @JsonIgnore
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @OneToMany()
+    @ManyToMany()
     private List<Surveillant> surveillants;
 
 }
