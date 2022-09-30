@@ -19,10 +19,6 @@ public class Surveillant {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private Professeur professeur;
-
-
-    public Surveillant(Professeur professeur) {
-
-        this.professeur = professeur;
-    }
+    public Surveillant(Examen examen, Professeur professeur) {
+        this.examen = examen;
 }

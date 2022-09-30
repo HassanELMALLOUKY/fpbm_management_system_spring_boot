@@ -97,7 +97,10 @@ public class PvController {
     public Pv getPvById(@PathVariable long id){
         return pvService.getPvById(id);
     }
-
+    @GetMapping("/surveillantByPv/{id}")
+    public List<Surveillant> getSurveillants(@PathVariable long id) {
+        return pvService.getSurveillants(id);
+    }
     @GetMapping("/ordre/{etudiant}/{pv}")
     public Pv getOrdreByEtudiantAndPv(@PathVariable String etudiant, @PathVariable String pv){
         return ordreService.getOrdreByEtudiantAndPv(Integer.parseInt(etudiant), Integer.parseInt(pv));

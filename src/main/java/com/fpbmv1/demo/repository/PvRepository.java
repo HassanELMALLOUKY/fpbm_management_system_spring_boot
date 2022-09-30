@@ -3,6 +3,7 @@ package com.fpbmv1.demo.repository;
 
 import com.fpbmv1.demo.entites.Etudiant;
 import com.fpbmv1.demo.entites.Pv;
+import com.fpbmv1.demo.entites.Surveillant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface PvRepository extends JpaRepository<Pv, Long> {
     List<Pv> getPvsWithCINE(String cine);
     @Query("select p from Pv p where p.date=?1 and p.module=?2 and p.Local=?3")
     Pv getPvByDateAndModuleAndLocal(String date, String module, String local);
+    @Query("select p.surveillants from Pv p where p.id=?1")
+    List<Surveillant> getSurveillants(long id);
 }
