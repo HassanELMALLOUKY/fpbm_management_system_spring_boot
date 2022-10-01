@@ -21,5 +21,6 @@ public interface SalleRepository extends JpaRepository<Salle,Integer> {
     @Modifying
     @Query("update Salle s set s.disponible=true where s.disponible=false")
     void makeSallesFree();
-
+    @Query("SELECT  count(s.id) from Salle s ")
+    int getNombreSalle();
 }

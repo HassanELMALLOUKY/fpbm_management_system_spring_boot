@@ -10,4 +10,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface FiliereRepository extends JpaRepository<Filiere, Integer> {
     Filiere findByName(String name);
+
+    @Query("SELECT  count(e.id) from Filiere e ")
+    int getNombreFiliere();
 }

@@ -110,4 +110,7 @@ public class ProfesseurService {
         }
         return numOfNonEmptyCells;
     }
+    public int getNbProf(){
+        return professeurRepository.getNombreProf();
+    }
 }

@@ -3,6 +3,7 @@ package com.fpbmv1.demo.services.Pvs;
 import com.fpbmv1.demo.entites.*;
 import com.fpbmv1.demo.entites.Module;
 import com.fpbmv1.demo.models.ExcelPv;
+import com.fpbmv1.demo.models.Statistic;
 import com.fpbmv1.demo.services.Gestion_Examen.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -270,5 +271,15 @@ public class PvsService {
         }
         return numOfNonEmptyCells;
     }
+
+   public Statistic getStatistic(){
+        Statistic stat = new Statistic();
+        stat.setNbSalle(salleService.getNbSalles());
+        stat.setNbEtudiants(etudiantService.getNbEtudiants());
+        stat.setNbProf(professeurService.getNbProf());
+        stat.setNbFiliere(filiereService.getNbFiliere());
+
+        return stat;
+   }
 
 }

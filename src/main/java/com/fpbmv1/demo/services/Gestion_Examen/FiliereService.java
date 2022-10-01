@@ -20,5 +20,9 @@ class FiliereService {
     public Filiere getFiliereByName(String s){
         return filiereRepository.findByName(s);
     }
+
+    public int getNbFiliere(){
+        return filiereRepository.getNombreFiliere();
+    }
 }
 

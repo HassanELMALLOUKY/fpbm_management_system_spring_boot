@@ -15,4 +15,6 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
     List<Etudiant> getEtudiantsByFiliere(String f,String s, String m);
 
    Etudiant getEtudiantsByCINE(String cine);
+   @Query("SELECT  count(e.id) from Etudiant e ")
+   int getNombreEtudiant();
 }

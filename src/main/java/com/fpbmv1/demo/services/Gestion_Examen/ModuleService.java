@@ -21,5 +21,6 @@ class ModuleService {
     public Module getFiliereByName(String s){
         return moduleRepository.findByName(s);
     }
+
 }
 

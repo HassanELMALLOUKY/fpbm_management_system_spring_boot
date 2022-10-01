@@ -55,4 +55,8 @@ public class SalleService {
     public void freeSalle(){
         salleRepository.makeSallesFree();
     }
+
+    public int getNbSalles(){
+        return salleRepository.getNombreSalle();
+    }
 }

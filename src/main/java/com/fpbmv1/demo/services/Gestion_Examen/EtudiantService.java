@@ -122,5 +122,8 @@ public class EtudiantService{
         }
         return numOfNonEmptyCells;
     }
+    public int getNbEtudiants(){
+        return etudiantRepository.getNombreEtudiant();
+    }
 
 }

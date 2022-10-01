@@ -3,9 +3,11 @@ package com.fpbmv1.demo.controller.Gestion_Examen;
 import com.fpbmv1.demo.entites.Etudiant;
 import com.fpbmv1.demo.entites.Filiere;
 import com.fpbmv1.demo.entites.Professeur;
+import com.fpbmv1.demo.models.Statistic;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantExcelImport;
 import com.fpbmv1.demo.services.Gestion_Examen.EtudiantService;
 import com.fpbmv1.demo.services.Gestion_Examen.FiliereService;
+import com.fpbmv1.demo.services.Pvs.PvsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +24,7 @@ public class EtudiantController {
     @Autowired
     private EtudiantService etudiantService;
     @Autowired
-    private FiliereService filiereService;
-    @Autowired
-    private EtudiantExcelImport etudiantExcelImport;
+    private PvsService pvsService;
 
 
     // display list of etudiants
@@ -71,6 +71,9 @@ public class EtudiantController {
     public List<Etudiant> getEtudiantsByFiliere(){
         return etudiantService.getEtudiantsByFiliere("SEG","S6","M33 :Audit General");
     }
-
+    @GetMapping("/nbEtudiants")
+    public Statistic getNbEtudiants(){
+        return pvsService.getStatistic();
+    }
 
 }
